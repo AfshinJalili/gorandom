@@ -2,6 +2,15 @@
 
 CLI tool for learning Go through curated articles from official sources.
 
+## Prerequisites
+
+Requires [Bun](https://bun.sh) runtime.
+
+```bash
+# Install Bun (macOS, Linux, WSL)
+curl -fsSL https://bun.sh/install | bash
+```
+
 ## Install
 
 ```bash
