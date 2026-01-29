@@ -1,82 +1,82 @@
-# random-go
+# gorandom
 
-A CLI tool that serves random Go learning articles from curated sources.
+CLI tool for learning Go through curated articles from official sources.
 
-## Sources
-
-- **Go Docs** - Official documentation and tutorials
-- **Tour of Go** - Interactive Go tutorial
-- **Go by Example** - Annotated example programs
-- **Standard Library** - Package documentation (pkg.go.dev)
-- **Go Blog** - Official Go blog posts
-
-## Installation
+## Install
 
 ```bash
-# Clone and install
 bun install
-
-# Run directly
-bun run index.ts
-
-# Or link globally
 bun link
-random-go
 ```
 
 ## Usage
 
 ```bash
-# Get a random unread article
-random-go
+# Random unread article
+gorandom
 
-# Get any random article (including ones you've read)
-gorandom--any
+# Include already-read articles
+gorandom --any
 
 # Filter by source
-gorandom--source tour
-gorandom--source blog
-gorandom--source gobyexample
+gorandom --source=tour
+gorandom random -s blog
 
-# View your history
-gorandomhistory
-gorandomhistory --limit 20
+# View history
+gorandom history
+gorandom history --limit=5
 
-# Mark article as read (use index 1 for most recent)
-gorandommark 1
-gorandommark https://gobyexample.com/goroutines
+# Mark as read (index or URL)
+gorandom mark 1
+gorandom mark https://go.dev/doc/effective_go
 
-# Unmark article
-gorandomunmark 1
+# Interactive mark (no arg = select from list)
+gorandom mark
 
-# See your progress
-gorandomstats
+# Unmark as unread
+gorandom unmark 1
 
-# List available sources
-gorandomsources
+# Progress stats
+gorandom stats
 
-# Show help
-gorandomhelp
+# List sources
+gorandom sources
+
+# Help
+gorandom --help
+gorandom mark --help
 ```
 
-## Features
+## Sources (258 articles)
 
-- **Random Selection**: Prioritizes unread articles by default
-- **History Tracking**: Automatically records viewed articles
-- **Mark as Read**: Track your progress through Go learning materials
-- **Source Filtering**: Focus on specific content sources
-- **Progress Stats**: See completion percentages per source
+| Source | Description | Count |
+|--------|-------------|-------|
+| `docs` | Official Go documentation | 26 |
+| `tour` | Tour of Go interactive tutorial | 83 |
+| `gobyexample` | Go by Example | 82 |
+| `pkg` | Standard library docs | 24 |
+| `blog` | Official Go Blog | 43 |
 
-## Data Storage
+## Development
 
-History is stored in `~/.random-go/history.json`
+```bash
+# Run
+bun run start
 
-## Adding More Links
+# Test
+bun test
 
-Edit `links.ts` to add more articles to the pool:
-
-```typescript
-{ url: 'https://example.com/article', source: 'blog', title: 'Article Title' }
+# Lint & format
+bun run check
 ```
 
-Valid sources: `docs`, `tour`, `gobyexample`, `pkg`, `blog`
+## Storage
+
+History saved to `~/.random-go/history.json`
+
+## Stack
+
+- [Bun](https://bun.sh) - Runtime
+- [citty](https://github.com/unjs/citty) - CLI framework
+- [@inquirer/prompts](https://github.com/SBoudrias/Inquirer.js) - Interactive prompts
+- [Biome](https://biomejs.dev) - Linter/formatter
