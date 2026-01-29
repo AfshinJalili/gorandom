@@ -1,4 +1,4 @@
-export type ArticleSource = 'docs' | 'tour' | 'gobyexample' | 'pkg' | 'blog';
+export type ArticleSource = "docs" | "tour" | "gobyexample" | "pkg" | "blog";
 
 export interface Article {
   url: string;

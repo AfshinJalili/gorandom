@@ -1,11 +1,11 @@
-import { homedir } from 'os';
-import { join } from 'path';
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { existsSync } from 'fs';
-import type { HistoryData, HistoryEntry } from './types';
+import { existsSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { homedir } from "node:os";
+import { join } from "node:path";
+import type { HistoryData } from "./types";
 
-const CONFIG_DIR = join(homedir(), '.random-go');
-const HISTORY_FILE = join(CONFIG_DIR, 'history.json');
+const CONFIG_DIR = join(homedir(), ".random-go");
+const HISTORY_FILE = join(CONFIG_DIR, "history.json");
 
 async function ensureConfigDir(): Promise<void> {
   if (!existsSync(CONFIG_DIR)) {
@@ -15,13 +15,13 @@ async function ensureConfigDir(): Promise<void> {
 
 export async function loadHistory(): Promise<HistoryData> {
   await ensureConfigDir();
-  
+
   if (!existsSync(HISTORY_FILE)) {
     return { entries: [] };
   }
-  
+
   try {
-    const data = await readFile(HISTORY_FILE, 'utf-8');
+    const data = await readFile(HISTORY_FILE, "utf-8");
     return JSON.parse(data) as HistoryData;
   } catch {
     return { entries: [] };
@@ -30,14 +30,14 @@ export async function loadHistory(): Promise<HistoryData> {
 
 export async function saveHistory(history: HistoryData): Promise<void> {
   await ensureConfigDir();
-  await writeFile(HISTORY_FILE, JSON.stringify(history, null, 2), 'utf-8');
+  await writeFile(HISTORY_FILE, JSON.stringify(history, null, 2), "utf-8");
 }
 
 export async function addToHistory(url: string): Promise<void> {
   const history = await loadHistory();
-  
+
   // Check if already in history
-  const existing = history.entries.find(e => e.url === url);
+  const existing = history.entries.find((e) => e.url === url);
   if (existing) {
     // Update viewedAt time
     existing.viewedAt = new Date().toISOString();
@@ -49,20 +49,20 @@ export async function addToHistory(url: string): Promise<void> {
       isRead: false,
     });
   }
-  
+
   await saveHistory(history);
 }
 
 export async function markAsRead(url: string): Promise<boolean> {
   const history = await loadHistory();
-  
-  const entry = history.entries.find(e => e.url === url);
+
+  const entry = history.entries.find((e) => e.url === url);
   if (entry) {
     entry.isRead = true;
     await saveHistory(history);
     return true;
   }
-  
+
   // If not in history, add it as read
   history.entries.push({
     url,
@@ -75,25 +75,25 @@ export async function markAsRead(url: string): Promise<boolean> {
 
 export async function markAsUnread(url: string): Promise<boolean> {
   const history = await loadHistory();
-  
-  const entry = history.entries.find(e => e.url === url);
+
+  const entry = history.entries.find((e) => e.url === url);
   if (entry) {
     entry.isRead = false;
     await saveHistory(history);
     return true;
   }
-  
+
   return false;
 }
 
 export async function getReadUrls(): Promise<Set<string>> {
   const history = await loadHistory();
-  return new Set(history.entries.filter(e => e.isRead).map(e => e.url));
+  return new Set(history.entries.filter((e) => e.isRead).map((e) => e.url));
 }
 
 export async function getViewedUrls(): Promise<Set<string>> {
   const history = await loadHistory();
-  return new Set(history.entries.map(e => e.url));
+  return new Set(history.entries.map((e) => e.url));
 }
 
 export function getHistoryFilePath(): string {
