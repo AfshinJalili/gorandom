@@ -83,6 +83,35 @@ bun run check
 
 History saved to `~/.random-go/history.json`
 
+## How commands work
+
+### history
+
+- Loads `~/.random-go/history.json` (creates dir/file if missing).
+- Sorts entries by `viewedAt` descending (newest first).
+- Shows the first `limit` entries (default 10). Each line: `[READ]` or `[    ]`, date, title, then URL.
+- Entries are added/updated when you run `gorandom` (random article) or use `mark`/`unmark`.
+
+### mark (mark as read)
+
+**Resolving the target URL:**
+
+- **No arg:** Interactive prompt lists the 10 most recent **unread** entries; you pick one.
+- **Number (e.g. `1`):** History sorted newest-first; `1` = most recent, `2` = second, etc. Invalid index exits with error.
+- **Other:** Treated as the URL.
+
+**Effect:** `markAsRead(url)` loads history; if the URL exists, sets `isRead = true`; if not, adds a new entry with `isRead = true`. Always succeeds.
+
+### unmark (mark as unread)
+
+**Resolving the target URL:**
+
+- **No arg:** Interactive prompt lists the 10 most recent **read** entries; you pick one.
+- **Number:** Same as mark — 1 = most recent in history. Invalid index exits with error.
+- **Other:** Treated as the URL.
+
+**Effect:** `markAsUnread(url)` only updates existing entries (sets `isRead = false`). If the URL is not in history, prints "URL not found in history" and does nothing.
+
 ## Stack
 
 - [Bun](https://bun.sh) - Runtime

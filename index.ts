@@ -175,7 +175,12 @@ async function commandMark(url?: string): Promise<void> {
     );
     const index = parseInt(url, 10) - 1;
     if (index >= 0 && index < sorted.length) {
-      targetUrl = sorted[index]?.url;
+      const entry = sorted[index];
+      if (!entry) {
+        console.error(`Invalid index: ${url}. Use 1 for most recent.`);
+        process.exit(1);
+      }
+      targetUrl = entry.url;
     } else {
       console.error(`Invalid index: ${url}. Use 1 for most recent.`);
       process.exit(1);
@@ -203,7 +208,12 @@ async function commandUnmark(url?: string): Promise<void> {
     );
     const index = parseInt(url, 10) - 1;
     if (index >= 0 && index < sorted.length) {
-      targetUrl = sorted[index]?.url;
+      const entry = sorted[index];
+      if (!entry) {
+        console.error(`Invalid index: ${url}. Use 1 for most recent.`);
+        process.exit(1);
+      }
+      targetUrl = entry.url;
     } else {
       console.error(`Invalid index: ${url}. Use 1 for most recent.`);
       process.exit(1);
@@ -274,12 +284,13 @@ function commandSources(): void {
 const historyCommand = defineCommand({
   meta: {
     name: "history",
-    description: "Show viewing history",
+    description:
+      "List recently viewed articles (newest first) with read/unread status and optional limit",
   },
   args: {
     limit: {
       type: "string",
-      description: "Number of entries to show",
+      description: "Max entries to show (default 10)",
       default: "10",
     },
   },
@@ -292,12 +303,14 @@ const historyCommand = defineCommand({
 const markCommand = defineCommand({
   meta: {
     name: "mark",
-    description: "Mark article as read (interactive if no arg)",
+    description:
+      "Mark an article as read. Pass URL, history index (1 = most recent), or no arg for interactive pick",
   },
   args: {
     target: {
       type: "positional",
-      description: "URL or history index (1 = most recent)",
+      description:
+        "URL, history index (1 = most recent), or omit to choose from unread list",
       required: false,
     },
   },
@@ -309,12 +322,14 @@ const markCommand = defineCommand({
 const unmarkCommand = defineCommand({
   meta: {
     name: "unmark",
-    description: "Mark article as unread (interactive if no arg)",
+    description:
+      "Mark an article as unread. Pass URL, history index (1 = most recent), or no arg for interactive pick",
   },
   args: {
     target: {
       type: "positional",
-      description: "URL or history index (1 = most recent)",
+      description:
+        "URL, history index (1 = most recent), or omit to choose from read list",
       required: false,
     },
   },
@@ -326,7 +341,8 @@ const unmarkCommand = defineCommand({
 const statsCommand = defineCommand({
   meta: {
     name: "stats",
-    description: "Show read/unread counts per source",
+    description:
+      "Show progress: read count and percentage per source and total",
   },
   run: async () => {
     await commandStats();
@@ -336,7 +352,8 @@ const statsCommand = defineCommand({
 const sourcesCommand = defineCommand({
   meta: {
     name: "sources",
-    description: "List available sources",
+    description:
+      "List content sources (docs, tour, gobyexample, pkg, blog) with article counts",
   },
   run: () => {
     commandSources();
@@ -346,19 +363,21 @@ const sourcesCommand = defineCommand({
 const randomCommand = defineCommand({
   meta: {
     name: "random",
-    description: "Get a random article (default command)",
+    description:
+      "Get one random article. Respects --any and --source. Same as running gorandom with flags",
   },
   args: {
     any: {
       type: "boolean",
       alias: "a",
-      description: "Include read articles",
+      description: "Include already-read articles in random pick",
       default: false,
     },
     source: {
       type: "string",
       alias: "s",
-      description: "Filter by source (docs, tour, gobyexample, pkg, blog)",
+      description:
+        "Filter by source (docs, tour, gobyexample, pkg, blog). See sources command",
     },
   },
   run: async ({ args }) => {
@@ -379,19 +398,21 @@ const main = defineCommand({
   meta: {
     name: "gorandom",
     version: "1.0.0",
-    description: "Get random Go learning articles",
+    description:
+      "Get a random unread Go article (default). Use subcommands: history, mark, unmark, stats, sources",
   },
   args: {
     any: {
       type: "boolean",
       alias: "a",
-      description: "Include read articles",
+      description: "Include already-read articles in random pick",
       default: false,
     },
     source: {
       type: "string",
       alias: "s",
-      description: 'Filter by source (use --source=VALUE or "random -s VALUE")',
+      description:
+        "Filter by source. Use --source=VALUE (e.g. tour, blog). See sources command",
     },
   },
   subCommands: {
