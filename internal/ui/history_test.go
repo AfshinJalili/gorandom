@@ -17,10 +17,12 @@ type errStore struct {
 	toggleBookmarkErr error
 }
 
-func (e errStore) AddToHistory(url string) error                 { return nil }
-func (e errStore) MarkAsRead(url string) error                   { return e.markReadErr }
-func (e errStore) MarkAsUnread(url string) (bool, error)         { return e.markUnreadErr == nil, e.markUnreadErr }
-func (e errStore) GetReadUrls() (map[string]bool, error)         { return map[string]bool{}, nil }
+func (e errStore) AddToHistory(url string) error { return nil }
+func (e errStore) MarkAsRead(url string) error   { return e.markReadErr }
+func (e errStore) MarkAsUnread(url string) (bool, error) {
+	return e.markUnreadErr == nil, e.markUnreadErr
+}
+func (e errStore) GetReadUrls() (map[string]bool, error) { return map[string]bool{}, nil }
 func (e errStore) GetSortedHistory() ([]history.HistoryEntry, error) {
 	return []history.HistoryEntry{}, nil
 }
@@ -31,7 +33,9 @@ func (e errStore) ToggleBookmark(url string) (bool, error) {
 	}
 	return true, nil
 }
-func (e errStore) GetBookmarks() ([]history.HistoryEntry, error) { return []history.HistoryEntry{}, nil }
+func (e errStore) GetBookmarks() ([]history.HistoryEntry, error) {
+	return []history.HistoryEntry{}, nil
+}
 
 func TestHistoryModelToggleReadError(t *testing.T) {
 	entry := history.HistoryEntry{URL: "http://example.com", ViewedAt: time.Now()}
