@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "Running gofmt..."
+gofmt -w ./cmd ./internal
+
+if ! command -v golangci-lint >/dev/null 2>&1; then
+  echo "golangci-lint not found. Install it to run lint checks."
+  echo "https://golangci-lint.run/usage/install/"
+  exit 1
+fi
+
+echo "Running golangci-lint..."
+golangci-lint run ./...

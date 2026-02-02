@@ -149,6 +149,14 @@ make vet
 make race
 ```
 
+### Git Hooks (Pre-Commit)
+
+```bash
+./scripts/install-hooks.sh
+```
+
+The pre-commit hook auto-runs `gofmt` and `golangci-lint`.
+
 ### Release (GoReleaser)
 
 ```bash
