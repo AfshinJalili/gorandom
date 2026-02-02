@@ -1,120 +1,163 @@
 # gorandom
 
-CLI tool for learning Go through curated articles from official sources.
+A CLI tool to discover random Go articles, tutorials, and documentation from trusted sources.
 
-## Prerequisites
+![Golang](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)
 
-Requires [Bun](https://bun.sh) runtime.
+## Features
+
+- **Random Article**: Get a random article to read.
+- **Source Filtering**: Filter by docs, tour, Go by Example, stdlib pkg, or blog.
+- **History**: Keep track of what you've read.
+- **Progress Tracking**: See your reading stats and progress bars.
+- **Interactive Mode**: Mark articles as read/unread using an interactive list.
+- **Smart Filtering**: By default, shows only unread articles (unless you've read them all).
+- **Next**: Pick the next unread article with a clear message when you're done.
+- **Search**: Find articles by title or source.
+- **Non-Interactive Output**: `--plain`, `--json`, or `--no-ui` for scripting.
+- **Clipboard**: Copy the current URL from the TUI.
+
+## Installation
+
+### From Source
+
+Requirements: Go 1.21 or later.
 
 ```bash
-# Install Bun (macOS, Linux, WSL)
-curl -fsSL https://bun.sh/install | bash
+git clone https://github.com/AfshinJalili/gorandom.git
+cd gorandom
+go install ./cmd/gorandom
 ```
 
-## Install
-
-```bash
-bun install
-bun link
-```
+This will install the `gorandom` binary to your `$GOPATH/bin`. Ensure this directory is in your `PATH`.
 
 ## Usage
 
+### Basic Commands
+
 ```bash
-# Random unread article
+# Get a random unread article
 gorandom
 
-# Include already-read articles
+# Get a random article from a specific source
+gorandom --source tour
+gorandom -s blog
+
+# Include already-read articles in the random pick
 gorandom --any
 
-# Filter by source
-gorandom --source=tour
-gorandom random -s blog
-
-# View history
+# View your recent history
 gorandom history
-gorandom history --limit=5
+gorandom history --limit 20
 
-# Mark as read (index or URL)
-gorandom mark 1
-gorandom mark https://go.dev/doc/effective_go
+# Pick the next unread article
+gorandom next
 
-# Interactive mark (no arg = select from list)
-gorandom mark
-
-# Unmark as unread
-gorandom unmark 1
-
-# Progress stats
-gorandom stats
-
-# List sources
-gorandom sources
-
-# Help
-gorandom --help
-gorandom mark --help
+# Search by keyword (title/source)
+gorandom search generics
 ```
 
-## Sources (258 articles)
+### Learning Tools
 
-| Source | Description | Count |
-|--------|-------------|-------|
-| `docs` | Official Go documentation | 26 |
-| `tour` | Tour of Go interactive tutorial | 83 |
-| `gobyexample` | Go by Example | 82 |
-| `pkg` | Standard library docs | 24 |
-| `blog` | Official Go Blog | 43 |
+```bash
+# Open article in browser
+gorandom open
+gorandom open 1
+
+# Manage Bookmarks
+gorandom bookmark 1    # Toggle bookmark
+gorandom bookmarks     # List bookmarks
+
+# Check progress & streaks
+gorandom stats
+```
+
+### Non-Interactive Output
+
+```bash
+# Plain text
+gorandom random --plain
+gorandom history --plain --limit 5
+
+# JSON
+gorandom random --json
+gorandom history --json --limit 20
+
+# Disable UI (alias of --plain)
+gorandom random --no-ui
+```
+
+### TUI Shortcuts
+
+- `n` / space: next article
+- `o` / enter: open in browser
+- `m`: mark as read
+- `b`: bookmark
+- `y`: copy URL
+- `h`: toggle help
+- `q`: quit
+### Tracking Progress
+
+```bash
+# Mark an article as read (interactive)
+gorandom mark
+
+# Mark specific URL as read
+gorandom mark https://go.dev/tour/welcome/1
+
+# Mark most recently viewed article as read
+gorandom mark 1
+
+# Mark as unread (interactive or by argument)
+gorandom unmark
+
+# View your learning stats
+gorandom stats
+```
+
+## Reviewing Sources
+
+```bash
+# List available content sources and article counts
+gorandom sources
+```
 
 ## Development
 
+The project is written in Go and uses:
+- [Cobra](https://github.com/spf13/cobra) for CLI commands
+- [Bubble Tea](https://github.com/charmbracelet/bubbletea) for TUI components
+
+### Running Locally
+
 ```bash
-# Run
-bun run start
-
-# Test
-bun test
-
-# Lint & format
-bun run check
+go run ./cmd/gorandom
 ```
 
-## Storage
+### Running Tests
 
-History saved to `~/.random-go/history.json`
+```bash
+go test ./...
+```
 
-## How commands work
+### Linting and Formatting
 
-### history
+```bash
+make fmt
+make lint
+make vet
+make race
+```
 
-- Loads `~/.random-go/history.json` (creates dir/file if missing).
-- Sorts entries by `viewedAt` descending (newest first).
-- Shows the first `limit` entries (default 10). Each line: `[READ]` or `[    ]`, date, title, then URL.
-- Entries are added/updated when you run `gorandom` (random article) or use `mark`/`unmark`.
+### Release (GoReleaser)
 
-### mark (mark as read)
+```bash
+make release-dry
+```
 
-**Resolving the target URL:**
+Data storage defaults to `~/.random-go/history.json`.
+For testing, you can override the config directory:
 
-- **No arg:** Interactive prompt lists the 10 most recent **unread** entries; you pick one.
-- **Number (e.g. `1`):** History sorted newest-first; `1` = most recent, `2` = second, etc. Invalid index exits with error.
-- **Other:** Treated as the URL.
-
-**Effect:** `markAsRead(url)` loads history; if the URL exists, sets `isRead = true`; if not, adds a new entry with `isRead = true`. Always succeeds.
-
-### unmark (mark as unread)
-
-**Resolving the target URL:**
-
-- **No arg:** Interactive prompt lists the 10 most recent **read** entries; you pick one.
-- **Number:** Same as mark — 1 = most recent in history. Invalid index exits with error.
-- **Other:** Treated as the URL.
-
-**Effect:** `markAsUnread(url)` only updates existing entries (sets `isRead = false`). If the URL is not in history, prints "URL not found in history" and does nothing.
-
-## Stack
-
-- [Bun](https://bun.sh) - Runtime
-- [citty](https://github.com/unjs/citty) - CLI framework
-- [@inquirer/prompts](https://github.com/SBoudrias/Inquirer.js) - Interactive prompts
-- [Biome](https://biomejs.dev) - Linter/formatter
+```bash
+GORANDOM_CONFIG_DIR=/tmp/test-go go run ./cmd/gorandom
+```

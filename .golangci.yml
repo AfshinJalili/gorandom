@@ -1,0 +1,34 @@
+run:
+  timeout: 5m
+
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - gosimple
+    - ineffassign
+    - typecheck
+    - nilerr
+    - bodyclose
+    - errorlint
+  disable:
+    - funlen
+    - gocognit
+    - gocyclo
+    - lll
+    - dupl
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+  govet:
+    enable-all: false
+  errorlint:
+    errorf: true
+
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

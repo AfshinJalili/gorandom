@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Format Check
+        run: gofmt -l ./cmd ./internal | tee /tmp/gofmt.out
+
+      - name: Fail If Unformatted
+        run: test ! -s /tmp/gofmt.out
+
+      - name: Tests
+        run: go test ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Race
+        run: go test -race ./...
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: ./...
