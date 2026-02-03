@@ -37,6 +37,12 @@ This will install the `gorandom` binary to your `$GOPATH/bin`. Ensure this direc
 go install github.com/AfshinJalili/gorandom/cmd/gorandom@latest
 ```
 
+After installing, fetch the latest sources:
+
+```bash
+gorandom sources update
+```
+
 ### Download Binary (GitHub Releases)
 
 1. Download the binary for your OS/arch from the Releases page.

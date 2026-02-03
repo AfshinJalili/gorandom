@@ -10,15 +10,17 @@ import (
 )
 
 type CardModel struct {
-	Article  *articles.Article
-	Pool     []articles.Article
-	Message  string
-	MsgType  string // "info", "error", "success"
-	Quitting bool
-	History  history.Store
-	ShowHelp bool
-	Stats    string
-	Total    int
+	Article      *articles.Article
+	Pool         []articles.Article
+	Message      string
+	MsgType      string // "info", "error", "success"
+	Quitting     bool
+	History      history.Store
+	ShowHelp     bool
+	Stats        string
+	Total        int
+	IsRead       bool
+	IsBookmarked bool
 }
 
 func (m CardModel) Init() tea.Cmd {
@@ -45,6 +47,7 @@ func (m CardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// Add to history automatically (as per original logic, though strictly maybe only if they "read" it, but viewed is usually enough)
 				if m.Article != nil {
 					m.History.AddToHistory(m.Article.URL)
+					m.IsRead, m.IsBookmarked = getArticleState(m.History, m.Article.URL)
 				}
 				m.Message = ""
 			} else {
@@ -67,13 +70,26 @@ func (m CardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "m":
 			// Toggle read status
 			if m.Article != nil {
-				err := m.History.MarkAsRead(m.Article.URL)
+				var err error
 				msg := "Marked as read"
 				typeStr := "success"
-				if err != nil {
-					msg = "Failed to mark as read"
-					typeStr = "error"
+				if m.IsRead {
+					_, err = m.History.MarkAsUnread(m.Article.URL)
+					msg = "Marked as unread"
+				} else {
+					err = m.History.MarkAsRead(m.Article.URL)
 				}
+				if err != nil {
+					if m.IsRead {
+						msg = "Failed to mark as unread"
+					} else {
+						msg = "Failed to mark as read"
+					}
+					typeStr = "error"
+				} else {
+					m.IsRead = !m.IsRead
+				}
+				m.IsRead, m.IsBookmarked = getArticleState(m.History, m.Article.URL)
 				return m, func() tea.Msg {
 					return statusMsg{text: msg, typeStr: typeStr}
 				}
@@ -90,7 +106,13 @@ func (m CardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					typeStr = "error"
 				} else if !bookmarked {
 					msg = "Removed bookmark"
+				} else {
+					m.IsBookmarked = true
 				}
+				if err == nil {
+					m.IsBookmarked = bookmarked
+				}
+				m.IsRead, m.IsBookmarked = getArticleState(m.History, m.Article.URL)
 				return m, func() tea.Msg {
 					return statusMsg{text: msg, typeStr: typeStr}
 				}
@@ -122,7 +144,7 @@ func (m CardModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		cmd := tea.Tick(2*time.Second, func(t time.Time) tea.Msg {
 			return clearMsg{}
 		})
-		if msg.typeStr == "success" && msg.text == "Marked as read" {
+		if msg.typeStr == "success" && (msg.text == "Marked as read" || msg.text == "Marked as unread") {
 			return m, tea.Batch(cmd, m.loadStatsCmd())
 		}
 		return m, cmd
@@ -161,7 +183,17 @@ func (m CardModel) View() string {
 
 	// Content
 	source := articles.FormatSource(m.Article.Source)
-	content := fmt.Sprintf("%s\n%s\n\n%s",
+	readIcon := UnreadStyle.Render("○")
+	if m.IsRead {
+		readIcon = ReadStyle.Render("✓")
+	}
+	bookmarkIcon := " "
+	if m.IsBookmarked {
+		bookmarkIcon = BookmarkStyle.Render("★")
+	}
+	content := fmt.Sprintf("%s %s %s\n%s\n\n%s",
+		readIcon,
+		bookmarkIcon,
 		SourceBadgeStyle.Render(source),
 		CardTitleStyle.Render(m.Article.Title),
 		URLStyle.Render(m.Article.URL),
@@ -207,12 +239,19 @@ func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Artic
 	if initial != nil {
 		store.AddToHistory(initial.URL)
 	}
+	isRead := false
+	isBookmarked := false
+	if initial != nil {
+		isRead, isBookmarked = getArticleState(store, initial.URL)
+	}
 
 	m := CardModel{
-		Article: initial,
-		Pool:    pool,
-		History: store,
-		Total:   total,
+		Article:      initial,
+		Pool:         pool,
+		History:      store,
+		Total:        total,
+		IsRead:       isRead,
+		IsBookmarked: isBookmarked,
 	}
 
 	p := tea.NewProgram(m)
@@ -224,7 +263,10 @@ func (m CardModel) loadStatsCmd() tea.Cmd {
 	return func() tea.Msg {
 		total := m.Total
 		if total == 0 {
-			total = len(articles.Data)
+			total = len(m.Pool)
+			if total == 0 {
+				total = len(articles.Data)
+			}
 		}
 		readUrls, err := m.History.GetReadUrls()
 		if err != nil {
@@ -243,11 +285,30 @@ func helpScreen() string {
 	return "Shortcuts:\n" +
 		"  n / space  next article\n" +
 		"  o / enter  open in browser\n" +
-		"  m          mark as read\n" +
+		"  m          toggle read\n" +
 		"  b          bookmark\n" +
 		"  y          copy URL\n" +
 		"  h          toggle help\n" +
 		"  q          quit\n" +
 		"\nLegend:\n" +
 		"  ✓ read   ○ unread   ★ bookmarked"
+}
+
+func getArticleState(store history.Store, url string) (bool, bool) {
+	isRead := false
+	isBookmarked := false
+	readUrls, err := store.GetReadUrls()
+	if err == nil {
+		isRead = readUrls[url]
+	}
+	bookmarks, err := store.GetBookmarks()
+	if err == nil {
+		for _, entry := range bookmarks {
+			if entry.URL == url {
+				isBookmarked = true
+				break
+			}
+		}
+	}
+	return isRead, isBookmarked
 }

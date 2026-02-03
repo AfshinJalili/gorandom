@@ -2,6 +2,7 @@ package ui
 
 import (
 	"errors"
+	"strings"
 	"testing"
 
 	"github.com/AfshinJalili/gorandom/internal/articles"
@@ -31,6 +32,35 @@ func (s cardStore) ToggleBookmark(url string) (bool, error) {
 	return true, nil
 }
 func (s cardStore) GetBookmarks() ([]history.HistoryEntry, error) { return nil, nil }
+
+type mutableStore struct {
+	read      map[string]bool
+	bookmarks map[string]bool
+}
+
+func (s *mutableStore) AddToHistory(url string) error         { return nil }
+func (s *mutableStore) MarkAsRead(url string) error           { s.read[url] = true; return nil }
+func (s *mutableStore) MarkAsUnread(url string) (bool, error) { s.read[url] = false; return true, nil }
+func (s *mutableStore) GetReadUrls() (map[string]bool, error) { return s.read, nil }
+func (s *mutableStore) GetSortedHistory() ([]history.HistoryEntry, error) {
+	return nil, nil
+}
+func (s *mutableStore) CalculateStreak() (int, error) { return 0, nil }
+func (s *mutableStore) ToggleBookmark(url string) (bool, error) {
+	if s.bookmarks[url] {
+		delete(s.bookmarks, url)
+		return false, nil
+	}
+	s.bookmarks[url] = true
+	return true, nil
+}
+func (s *mutableStore) GetBookmarks() ([]history.HistoryEntry, error) {
+	var entries []history.HistoryEntry
+	for url := range s.bookmarks {
+		entries = append(entries, history.HistoryEntry{URL: url, IsBookmarked: true})
+	}
+	return entries, nil
+}
 
 func TestCardModelMarkReadError(t *testing.T) {
 	store := cardStore{markReadErr: errors.New("boom")}
@@ -92,5 +122,67 @@ func TestCardModelStatsSuccess(t *testing.T) {
 
 	if stats == "" || stats == "Stats unavailable" {
 		t.Fatalf("expected stats text, got %q", stats)
+	}
+}
+
+func TestCardModelToggleReadUpdatesIcons(t *testing.T) {
+	store := &mutableStore{
+		read:      map[string]bool{},
+		bookmarks: map[string]bool{},
+	}
+	m := CardModel{
+		Article: &articles.Article{Title: "Title", URL: "http://example.com"},
+		History: store,
+	}
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("m")})
+	cm := updated.(CardModel)
+	if !cm.IsRead {
+		t.Fatalf("expected IsRead true")
+	}
+	view := cm.View()
+	if !strings.Contains(view, "✓") {
+		t.Fatalf("expected read icon in view, got %q", view)
+	}
+
+	updated, _ = cm.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("m")})
+	cm = updated.(CardModel)
+	if cm.IsRead {
+		t.Fatalf("expected IsRead false")
+	}
+	view = cm.View()
+	if !strings.Contains(view, "○") {
+		t.Fatalf("expected unread icon in view, got %q", view)
+	}
+}
+
+func TestCardModelToggleBookmarkUpdatesIcons(t *testing.T) {
+	store := &mutableStore{
+		read:      map[string]bool{},
+		bookmarks: map[string]bool{},
+	}
+	m := CardModel{
+		Article: &articles.Article{Title: "Title", URL: "http://example.com"},
+		History: store,
+	}
+
+	updated, _ := m.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("b")})
+	cm := updated.(CardModel)
+	if !cm.IsBookmarked {
+		t.Fatalf("expected IsBookmarked true")
+	}
+	view := cm.View()
+	if !strings.Contains(view, "★") {
+		t.Fatalf("expected bookmark icon in view, got %q", view)
+	}
+
+	updated, _ = cm.Update(tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune("b")})
+	cm = updated.(CardModel)
+	if cm.IsBookmarked {
+		t.Fatalf("expected IsBookmarked false")
+	}
+	view = cm.View()
+	if strings.Contains(view, "★") {
+		t.Fatalf("did not expect bookmark icon in view, got %q", view)
 	}
 }

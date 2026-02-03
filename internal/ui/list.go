@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -57,7 +58,7 @@ func (m model) View() string {
 	if m.choice != "" || m.quitting {
 		return ""
 	}
-	return "\n" + m.list.View()
+	return "\n" + m.list.View() + "\n" + HelpStyle.Render(listLegend())
 }
 
 func SelectArticle(items []struct{ Title, Value string }, title string) (string, error) {
@@ -67,7 +68,7 @@ func SelectArticle(items []struct{ Title, Value string }, title string) (string,
 	}
 
 	l := list.New(listItems, list.NewDefaultDelegate(), 0, 0)
-	l.Title = title
+	l.Title = fmt.Sprintf("%s  (%s)", title, listLegend())
 	l.SetShowStatusBar(false)
 	l.SetFilteringEnabled(true)
 	// simple styles
@@ -94,4 +95,12 @@ func SelectArticle(items []struct{ Title, Value string }, title string) (string,
 	}
 
 	return finalM.choice, nil
+}
+
+func listLegend() string {
+	return strings.Join([]string{
+		"✓ read",
+		"○ unread",
+		"★ bookmarked",
+	}, " • ")
 }

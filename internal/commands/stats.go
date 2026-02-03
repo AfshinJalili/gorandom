@@ -28,7 +28,10 @@ func runStats(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	data := loadArticles(cmd)
+	data, ok := loadArticlesRequired(cmd)
+	if !ok {
+		return
+	}
 	streak, err := historyStore.CalculateStreak()
 	if err != nil {
 		printError(cmd, fmt.Sprintf("Could not calculate streak: %v", err), "check your history file")

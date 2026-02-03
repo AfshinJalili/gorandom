@@ -21,9 +21,16 @@ const (
 )
 
 var (
-	cacheOnce sync.Once
-	cacheErr  error
+	ErrCacheMissing = errors.New("sources cache missing")
+	dataMu          sync.RWMutex
+	dataLoaded      bool
+	httpClient      = &http.Client{Timeout: 10 * time.Second}
 )
+
+const fetchRetryCount = 2
+
+// Data is the in-memory source list, populated from the local cache.
+var Data []Article
 
 type sourcesFile struct {
 	Version   int       `json:"version"`
@@ -72,21 +79,46 @@ func autoUpdateEnabled() bool {
 			return false
 		}
 	}
-	return true
+	return false
 }
 
 func GetData() ([]Article, error) {
-	if err := ensureCacheLoaded(); err != nil {
-		return Data, err
+	dataMu.RLock()
+	if len(Data) > 0 {
+		data := Data
+		dataMu.RUnlock()
+		return data, nil
+	}
+	dataMu.RUnlock()
+
+	if err := loadCache(); err != nil {
+		if errors.Is(err, ErrCacheMissing) {
+			var lastErr error
+			for attempt := 1; attempt <= fetchRetryCount; attempt++ {
+				if attempt > 1 {
+					time.Sleep(250 * time.Millisecond)
+				}
+				if _, fetchErr := updateFromRemote(true); fetchErr == nil {
+					lastErr = nil
+					break
+				} else {
+					lastErr = fetchErr
+				}
+			}
+			if lastErr != nil {
+				return nil, lastErr
+			}
+		} else {
+			return nil, err
+		}
+	}
+
+	dataMu.RLock()
+	defer dataMu.RUnlock()
+	if len(Data) == 0 {
+		return nil, fmt.Errorf("sources cache missing")
 	}
 	return Data, nil
-}
-
-func ensureCacheLoaded() error {
-	cacheOnce.Do(func() {
-		cacheErr = loadCache()
-	})
-	return cacheErr
 }
 
 func loadCache() error {
@@ -97,7 +129,7 @@ func loadCache() error {
 	data, err := os.ReadFile(cachePath)
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil
+			return ErrCacheMissing
 		}
 		return fmt.Errorf("failed to read sources cache: %w", err)
 	}
@@ -109,7 +141,10 @@ func loadCache() error {
 	if len(parsed.Articles) == 0 {
 		return fmt.Errorf("sources cache contains no articles")
 	}
+	dataMu.Lock()
 	Data = parsed.Articles
+	dataLoaded = true
+	dataMu.Unlock()
 	return nil
 }
 
@@ -155,9 +190,6 @@ func CacheStatusInfo() (CacheStatus, error) {
 }
 
 func updateFromRemote(force bool) (bool, error) {
-	if err := ensureCacheLoaded(); err != nil {
-		// Continue with remote fetch; cache may be corrupt.
-	}
 	meta, _ := readMeta()
 	if !force && !meta.FetchedAt.IsZero() && time.Since(meta.FetchedAt) < getTTL() {
 		return false, nil
@@ -173,7 +205,10 @@ func updateFromRemote(force bool) (bool, error) {
 		return false, nil
 	}
 
+	dataMu.Lock()
 	Data = articles
+	dataLoaded = true
+	dataMu.Unlock()
 	newMeta := cacheMeta{
 		FetchedAt: time.Now(),
 		Etag:      etag,
@@ -196,7 +231,7 @@ func fetchRemote(etag string) (bool, []Article, string, error) {
 	if etag != "" {
 		req.Header.Set("If-None-Match", etag)
 	}
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := httpClient.Do(req)
 	if err != nil {
 		return false, nil, "", err
 	}
@@ -239,6 +274,21 @@ func getCachePath() (string, error) {
 		return "", err
 	}
 	return filepath.Join(dir, "sources.json"), nil
+}
+
+func CacheExists() (bool, error) {
+	path, err := getCachePath()
+	if err != nil {
+		return false, err
+	}
+	_, err = os.Stat(path)
+	if err == nil {
+		return true, nil
+	}
+	if errors.Is(err, os.ErrNotExist) {
+		return false, nil
+	}
+	return false, err
 }
 
 func getMetaPath() (string, error) {

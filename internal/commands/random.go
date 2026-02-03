@@ -35,7 +35,10 @@ func runRandom(cmd *cobra.Command, args []string) {
 	any, _ := cmd.Flags().GetBool("any")
 	sourceStr, _ := cmd.Flags().GetString("source")
 
-	allArticles := loadArticles(cmd)
+	allArticles, ok := loadArticlesRequired(cmd)
+	if !ok {
+		return
+	}
 	pool := allArticles
 
 	pool, err = filterPool(pool, sourceStr, "")

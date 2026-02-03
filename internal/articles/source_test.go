@@ -1,15 +1,28 @@
 package articles
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
 	"testing"
 )
 
 func TestDataIntegrity(t *testing.T) {
-	if len(Data) == 0 {
-		t.Fatal("No articles found in Data")
+	path := filepath.Join("..", "..", "data", "sources.json")
+	raw, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("Failed to read sources.json: %v", err)
 	}
 
-	for i, a := range Data {
+	var payload sourcesFile
+	if err := json.Unmarshal(raw, &payload); err != nil {
+		t.Fatalf("Failed to parse sources.json: %v", err)
+	}
+	if len(payload.Articles) == 0 {
+		t.Fatal("No articles found in sources.json")
+	}
+
+	for i, a := range payload.Articles {
 		if a.URL == "" {
 			t.Errorf("Article at index %d has empty URL", i)
 		}

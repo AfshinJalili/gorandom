@@ -35,7 +35,10 @@ func runNext(cmd *cobra.Command, args []string) {
 	any, _ := cmd.Flags().GetBool("any")
 	sourceStr, _ := cmd.Flags().GetString("source")
 
-	allArticles := loadArticles(cmd)
+	allArticles, ok := loadArticlesRequired(cmd)
+	if !ok {
+		return
+	}
 	pool, err := filterPool(allArticles, sourceStr, "")
 	if err != nil {
 		printInvalidSource(cmd, sourceStr)

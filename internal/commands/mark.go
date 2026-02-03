@@ -38,7 +38,7 @@ func runMarkUnmark(cmd *cobra.Command, args []string, markRead bool) {
 
 	if len(args) == 0 {
 		// Interactive mode
-		loadArticles(cmd)
+		loadArticlesOptional(cmd)
 		entries, err := historyStore.GetSortedHistory()
 		if err != nil {
 			printHistoryLoadError(cmd, err)

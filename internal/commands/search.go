@@ -40,7 +40,10 @@ func runSearch(cmd *cobra.Command, args []string) {
 	any, _ := cmd.Flags().GetBool("any")
 	sourceStr, _ := cmd.Flags().GetString("source")
 
-	allArticles := loadArticles(cmd)
+	allArticles, ok := loadArticlesRequired(cmd)
+	if !ok {
+		return
+	}
 	pool, err := filterPool(allArticles, sourceStr, keyword)
 	if err != nil {
 		printInvalidSource(cmd, sourceStr)
@@ -76,8 +79,25 @@ func runSearch(cmd *cobra.Command, args []string) {
 		}
 
 		var items []struct{ Title, Value string }
+		readUrls, err := historyStore.GetReadUrls()
+		if err != nil {
+			printWarning(cmd, fmt.Sprintf("Could not load read status: %v", err))
+			readUrls = map[string]bool{}
+		}
+		if readUrls == nil {
+			readUrls = map[string]bool{}
+		}
+		bookmarks, err := historyStore.GetBookmarks()
+		if err != nil {
+			printWarning(cmd, fmt.Sprintf("Could not load bookmarks: %v", err))
+			bookmarks = nil
+		}
+		bookmarkedMap := map[string]bool{}
+		for _, entry := range bookmarks {
+			bookmarkedMap[entry.URL] = true
+		}
 		for _, a := range pool {
-			title := fmt.Sprintf("%s (%s)", a.Title, articles.FormatSource(a.Source))
+			title := formatSearchTitle(a, readUrls[a.URL], bookmarkedMap[a.URL])
 			items = append(items, struct{ Title, Value string }{Title: title, Value: a.URL})
 		}
 		choice, err := ui.SelectArticle(items, "Search Results")

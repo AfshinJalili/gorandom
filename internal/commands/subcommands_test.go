@@ -20,6 +20,11 @@ func setupTestEnv(t *testing.T) string {
 	}
 	os.Setenv("GORANDOM_CONFIG_DIR", tmpDir)
 	os.Setenv("GORANDOM_SOURCES_AUTO_UPDATE", "0")
+	if len(articles.Data) == 0 {
+		articles.Data = []articles.Article{
+			{URL: "http://example.com/default", Source: articles.SourceDocs, Title: "Default"},
+		}
+	}
 	return tmpDir
 }
 
@@ -46,6 +51,7 @@ func TestCommandSuite(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 	defer os.Unsetenv("GORANDOM_CONFIG_DIR")
 	defer os.Unsetenv("GORANDOM_SOURCES_AUTO_UPDATE")
+	resetSourcesFetchOnce()
 
 	t.Run("Sources", func(t *testing.T) {
 		resetFlags(rootCmd)

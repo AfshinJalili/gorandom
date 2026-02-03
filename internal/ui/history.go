@@ -182,7 +182,7 @@ func ShowHistoryWithStore(entries []history.HistoryEntry, title string, store hi
 	delegate := newItemDelegate(keys)
 
 	l := list.New(listItems, delegate, 0, 0)
-	l.Title = title
+	l.Title = fmt.Sprintf("%s  (%s)", title, listLegend())
 	l.SetShowStatusBar(true)
 	l.SetFilteringEnabled(true)
 	l.Styles.Title = TitleStyle

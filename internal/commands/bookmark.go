@@ -30,7 +30,7 @@ func runBookmark(cmd *cobra.Command, args []string) {
 
 	if len(args) == 0 {
 		// Interactive mode: Open history list
-		loadArticles(cmd)
+		loadArticlesOptional(cmd)
 		entries, err := historyStore.GetSortedHistory()
 		if err != nil {
 			printHistoryLoadError(cmd, err)
@@ -79,7 +79,7 @@ func runListBookmarks(cmd *cobra.Command, args []string) {
 		printHistoryLoadError(cmd, err)
 		return
 	}
-	loadArticles(cmd)
+	loadArticlesOptional(cmd)
 
 	if len(bookmarks) == 0 {
 		cmd.Println("No bookmarks yet.")

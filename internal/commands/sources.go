@@ -22,7 +22,10 @@ func init() {
 
 func runSources(cmd *cobra.Command, args []string) {
 	cmd.Println("\nAvailable sources:")
-	data := loadArticles(cmd)
+	data, ok := loadArticlesRequired(cmd)
+	if !ok {
+		return
+	}
 	for _, source := range articles.Sources {
 		count := len(articles.FilterBySource(data, source))
 		// Format similar to original CLI

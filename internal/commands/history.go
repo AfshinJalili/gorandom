@@ -32,7 +32,7 @@ func runHistory(cmd *cobra.Command, args []string) {
 	}
 
 	limit, _ := cmd.Flags().GetInt("limit")
-	loadArticles(cmd)
+	loadArticlesOptional(cmd)
 
 	entries, err := historyStore.GetSortedHistory()
 	if err != nil {
