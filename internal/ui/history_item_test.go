@@ -10,11 +10,11 @@ import (
 )
 
 func TestCreateListItemIcons(t *testing.T) {
-	orig := articles.Data
-	articles.Data = []articles.Article{
+	orig := articles.Cached()
+	articles.SetCached([]articles.Article{
 		{URL: "http://example.com/1", Title: "One", Source: articles.SourceDocs},
-	}
-	defer func() { articles.Data = orig }()
+	})
+	defer func() { articles.SetCached(orig) }()
 
 	entry := history.HistoryEntry{
 		URL:          "http://example.com/1",

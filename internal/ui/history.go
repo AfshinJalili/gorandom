@@ -203,7 +203,7 @@ func ShowHistoryWithStore(entries []history.HistoryEntry, title string, store hi
 
 func createListItem(entry history.HistoryEntry) HistoryItem {
 	var title string
-	for _, a := range articles.Data {
+	for _, a := range articles.Cached() {
 		if a.URL == entry.URL {
 			title = a.Title
 			break

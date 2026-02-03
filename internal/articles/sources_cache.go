@@ -29,8 +29,8 @@ var (
 
 const fetchRetryCount = 2
 
-// Data is the in-memory source list, populated from the local cache.
-var Data []Article
+// cachedArticles holds the in-memory source list, populated from the local cache.
+var cachedArticles []Article
 
 type sourcesFile struct {
 	Version   int       `json:"version"`
@@ -84,8 +84,8 @@ func autoUpdateEnabled() bool {
 
 func GetData() ([]Article, error) {
 	dataMu.RLock()
-	if len(Data) > 0 {
-		data := Data
+	if len(cachedArticles) > 0 {
+		data := cachedArticles
 		dataMu.RUnlock()
 		return data, nil
 	}
@@ -115,10 +115,10 @@ func GetData() ([]Article, error) {
 
 	dataMu.RLock()
 	defer dataMu.RUnlock()
-	if len(Data) == 0 {
+	if len(cachedArticles) == 0 {
 		return nil, fmt.Errorf("sources cache missing")
 	}
-	return Data, nil
+	return cachedArticles, nil
 }
 
 func loadCache() error {
@@ -142,7 +142,7 @@ func loadCache() error {
 		return fmt.Errorf("sources cache contains no articles")
 	}
 	dataMu.Lock()
-	Data = parsed.Articles
+	cachedArticles = parsed.Articles
 	dataLoaded = true
 	dataMu.Unlock()
 	return nil
@@ -206,7 +206,7 @@ func updateFromRemote(force bool) (bool, error) {
 	}
 
 	dataMu.Lock()
-	Data = articles
+	cachedArticles = articles
 	dataLoaded = true
 	dataMu.Unlock()
 	newMeta := cacheMeta{

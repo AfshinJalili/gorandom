@@ -20,10 +20,10 @@ func setupTestEnv(t *testing.T) string {
 	}
 	os.Setenv("GORANDOM_CONFIG_DIR", tmpDir)
 	os.Setenv("GORANDOM_SOURCES_AUTO_UPDATE", "0")
-	if len(articles.Data) == 0 {
-		articles.Data = []articles.Article{
+	if len(articles.Cached()) == 0 {
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/default", Source: articles.SourceDocs, Title: "Default"},
-		}
+		})
 	}
 	return tmpDir
 }
@@ -166,11 +166,11 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("RandomPlain", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/plain", Source: articles.SourceDocs, Title: "Plain Title"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)
@@ -185,11 +185,11 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("RandomJSON", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/json", Source: articles.SourceDocs, Title: "JSON Title"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)
@@ -282,11 +282,11 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("NextPlain", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/next", Source: articles.SourceDocs, Title: "Next Title"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)
@@ -301,11 +301,11 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("NextJSON", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/next-json", Source: articles.SourceDocs, Title: "Next JSON"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)
@@ -320,12 +320,12 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("SearchPlain", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/alpha", Source: articles.SourceDocs, Title: "Alpha Guide"},
 			{URL: "http://example.com/beta", Source: articles.SourceBlog, Title: "Beta Tips"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)
@@ -340,11 +340,11 @@ func TestCommandSuite(t *testing.T) {
 
 	t.Run("SearchJSON", func(t *testing.T) {
 		resetFlags(rootCmd)
-		orig := articles.Data
-		articles.Data = []articles.Article{
+		orig := articles.Cached()
+		articles.SetCached([]articles.Article{
 			{URL: "http://example.com/alpha-json", Source: articles.SourceDocs, Title: "Alpha JSON"},
-		}
-		defer func() { articles.Data = orig }()
+		})
+		defer func() { articles.SetCached(orig) }()
 
 		b := bytes.NewBufferString("")
 		rootCmd.SetOut(b)

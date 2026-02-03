@@ -40,10 +40,7 @@ func TestGetDataRetriesOnMissingCache(t *testing.T) {
 	os.Setenv("GORANDOM_SOURCES_URL", server.URL)
 	defer os.Unsetenv("GORANDOM_SOURCES_URL")
 
-	dataMu.Lock()
-	Data = nil
-	dataLoaded = false
-	dataMu.Unlock()
+	ResetCache()
 
 	data, err := GetData()
 	if err != nil {

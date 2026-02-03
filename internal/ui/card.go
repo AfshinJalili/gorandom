@@ -264,9 +264,9 @@ func (m CardModel) loadStatsCmd() tea.Cmd {
 		total := m.Total
 		if total == 0 {
 			total = len(m.Pool)
-			if total == 0 {
-				total = len(articles.Data)
-			}
+				if total == 0 {
+					total = len(articles.Cached())
+				}
 		}
 		readUrls, err := m.History.GetReadUrls()
 		if err != nil {

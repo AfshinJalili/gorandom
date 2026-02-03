@@ -46,7 +46,7 @@ func TestFetchMessageShownOnce(t *testing.T) {
 	os.Setenv("GORANDOM_SOURCES_URL", server.URL)
 	defer os.Unsetenv("GORANDOM_SOURCES_URL")
 
-	articles.Data = nil
+	articles.ResetCache()
 
 	cmd := &cobra.Command{}
 	buf := &bytes.Buffer{}

@@ -1,35 +1,27 @@
 # gorandom
 
-A CLI tool to discover random Go articles, tutorials, and documentation from trusted sources.
+A CLI and TUI to discover random Go articles, tutorials, and documentation from trusted sources.
 
-![Golang](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat&logo=go)
+![Golang](https://img.shields.io/badge/Go-1.25.5+-00ADD8?style=flat&logo=go)
 
 ## Features
 
-- **Random Article**: Get a random article to read.
-- **Source Filtering**: Filter by docs, tour, Go by Example, stdlib pkg, or blog.
-- **History**: Keep track of what you've read.
-- **Progress Tracking**: See your reading stats and progress bars.
-- **Interactive Mode**: Mark articles as read/unread using an interactive list.
-- **Smart Filtering**: By default, shows only unread articles (unless you've read them all).
-- **Next**: Pick the next unread article with a clear message when you're done.
-- **Search**: Find articles by title or source.
-- **Non-Interactive Output**: `--plain`, `--json`, or `--no-ui` for scripting.
-- **Clipboard**: Copy the current URL from the TUI.
+- Random article picker with unread-first behavior
+- Source filtering across docs, tour, Go by Example, stdlib pkg, and blog
+- History, bookmarks, and streak tracking
+- Interactive TUI with keyboard shortcuts
+- Non-interactive output for scripting (`--plain`, `--json`, `--no-ui`)
+- Remote sources file with local caching and manual refresh
+- Zen mode reader for focused, paragraph-by-paragraph reading
 
-## Installation
-
-### From Source
-
-Requirements: Go 1.21 or later.
+## Quickstart
 
 ```bash
-git clone https://github.com/AfshinJalili/gorandom.git
-cd gorandom
-go install ./cmd/gorandom
+gorandom sources update
+gorandom
 ```
 
-This will install the `gorandom` binary to your `$GOPATH/bin`. Ensure this directory is in your `PATH`.
+## Installation
 
 ### Go Install (Recommended)
 
@@ -37,56 +29,61 @@ This will install the `gorandom` binary to your `$GOPATH/bin`. Ensure this direc
 go install github.com/AfshinJalili/gorandom/cmd/gorandom@latest
 ```
 
-After installing, fetch the latest sources:
+### From Source
 
 ```bash
-gorandom sources update
+git clone https://github.com/AfshinJalili/gorandom.git
+cd gorandom
+go install ./cmd/gorandom
 ```
 
 ### Download Binary (GitHub Releases)
 
-1. Download the binary for your OS/arch from the Releases page.
+1. Download the binary for your OS and architecture from GitHub Releases.
 2. Make it executable (macOS/Linux): `chmod +x gorandom`
-3. Move it into your `PATH` (example): `mv gorandom /usr/local/bin/`
+3. Move it into your `PATH`, for example: `mv gorandom /usr/local/bin/`
 
 ## Usage
 
-### Basic Commands
+### Core Commands
 
 ```bash
-# Get a random unread article
+# Random unread article
 gorandom
 
-# Get a random article from a specific source
+# Pick next unread article
+gorandom next
+
+# Read in Zen mode
+gorandom zen
+
+# Search by keyword (title or source)
+gorandom search generics
+
+# Filter by source
 gorandom --source tour
-gorandom -s blog
+gorandom next --source blog
 
-# Include already-read articles in the random pick
+# Include already-read articles
 gorandom --any
+```
 
-# View your recent history
+### History and Bookmarks
+
+```bash
+# Recent history
 gorandom history
 gorandom history --limit 20
 
-# Pick the next unread article
-gorandom next
+# Mark read/unread
+gorandom mark
+gorandom unmark
 
-# Search by keyword (title/source)
-gorandom search generics
-```
+# Bookmark
+gorandom bookmark 1
+gorandom bookmarks
 
-### Learning Tools
-
-```bash
-# Open article in browser
-gorandom open
-gorandom open 1
-
-# Manage Bookmarks
-gorandom bookmark 1    # Toggle bookmark
-gorandom bookmarks     # List bookmarks
-
-# Check progress & streaks
+# Progress and streak
 gorandom stats
 ```
 
@@ -105,54 +102,72 @@ gorandom history --json --limit 20
 gorandom random --no-ui
 ```
 
-### TUI Shortcuts
+### Sources and Cache
 
-- `n` / space: next article
-- `o` / enter: open in browser
-- `m`: mark as read
-- `b`: bookmark
+```bash
+# Fetch or refresh sources
+gorandom sources update
+
+# Cache status
+gorandom sources status
+```
+
+### Zen Mode
+
+```bash
+# Read a curated article inside the terminal
+gorandom zen
+
+# Read an article from history by index
+gorandom zen 1
+
+# Force refresh the cached article content
+gorandom zen --refresh
+```
+
+## TUI Shortcuts
+
+- `n` or space: next article
+- `o` or enter: open in browser
+- `m`: toggle read
+- `b`: toggle bookmark
 - `y`: copy URL
 - `h`: toggle help
 - `q`: quit
-### Tracking Progress
 
-```bash
-# Mark an article as read (interactive)
-gorandom mark
+## Data and Caching
 
-# Mark specific URL as read
-gorandom mark https://go.dev/tour/welcome/1
+Sources are loaded from a JSON file hosted in this repo:
 
-# Mark most recently viewed article as read
-gorandom mark 1
-
-# Mark as unread (interactive or by argument)
-gorandom unmark
-
-# View your learning stats
-gorandom stats
+```
+https://raw.githubusercontent.com/AfshinJalili/gorandom/main/data/sources.json
 ```
 
-## Reviewing Sources
+Behavior:
 
-```bash
-# List available content sources and article counts
-gorandom sources
-```
+- On first run, the CLI fetches the sources file and caches it locally.
+- The cache lives in the config directory: `~/.random-go/sources.json`.
+- Use `gorandom sources update` to refresh.
+- `gorandom sources status` shows cache age and staleness (24h TTL indicator).
+
+## Configuration
+
+Environment variables:
+
+- `GORANDOM_CONFIG_DIR`: override config directory
+- `GORANDOM_SOURCES_URL`: override sources JSON URL
+- `GORANDOM_SOURCES_TTL`: override stale threshold used by status (default `24h`)
+- `GORANDOM_SOURCES_SPINNER=0`: disable the fetch spinner
 
 ## Development
 
-The project is written in Go and uses:
-- [Cobra](https://github.com/spf13/cobra) for CLI commands
-- [Bubble Tea](https://github.com/charmbracelet/bubbletea) for TUI components
-
-### Running Locally
+### Run Locally
 
 ```bash
 go run ./cmd/gorandom
 ```
 
-### Running Tests
+### Tests
 
 ```bash
 go test ./...
@@ -175,37 +190,8 @@ make race
 
 The pre-commit hook auto-runs `gofmt` and `golangci-lint`.
 
-### Release (GoReleaser)
+## Troubleshooting
 
-```bash
-make release-dry
-```
-
-### Publishing a Release (Step by Step)
-
-```bash
-# 1) Ensure you're on main and clean
-git status
-
-# 2) Run tests (recommended)
-go test ./...
-make fmt
-make lint
-
-# 3) Tag the release (use semantic versioning)
-git tag v0.1.1
-
-# 4) Push code and tag
-git push origin main
-git push origin v0.1.1
-```
-
-After pushing the tag, GitHub Actions runs GoReleaser to build binaries
-for Linux/macOS/Windows and publishes a GitHub Release with the artifacts.
-
-Data storage defaults to `~/.random-go/history.json`.
-For testing, you can override the config directory:
-
-```bash
-GORANDOM_CONFIG_DIR=/tmp/test-go go run ./cmd/gorandom
-```
+- **Sources cache missing**: run `gorandom sources update`.
+- **Clipboard on Linux**: install `xclip` or `xsel` to enable copying.
+- **History file location**: `~/.random-go/history.json` (or `GORANDOM_CONFIG_DIR`).
