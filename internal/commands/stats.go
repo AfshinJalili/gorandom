@@ -28,6 +28,7 @@ func runStats(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	data := loadArticles(cmd)
 	streak, err := historyStore.CalculateStreak()
 	if err != nil {
 		printError(cmd, fmt.Sprintf("Could not calculate streak: %v", err), "check your history file")
@@ -53,7 +54,7 @@ func runStats(cmd *cobra.Command, args []string) {
 
 	for _, source := range articles.Sources {
 		// Filter articles by source
-		sourceArticles := articles.FilterBySource(articles.Data, source)
+		sourceArticles := articles.FilterBySource(data, source)
 
 		sourceRead := 0
 		for _, a := range sourceArticles {

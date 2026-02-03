@@ -19,6 +19,7 @@ func setupTestEnv(t *testing.T) string {
 		t.Fatal(err)
 	}
 	os.Setenv("GORANDOM_CONFIG_DIR", tmpDir)
+	os.Setenv("GORANDOM_SOURCES_AUTO_UPDATE", "0")
 	return tmpDir
 }
 
@@ -44,6 +45,7 @@ func TestCommandSuite(t *testing.T) {
 	tmpDir := setupTestEnv(t)
 	defer os.RemoveAll(tmpDir)
 	defer os.Unsetenv("GORANDOM_CONFIG_DIR")
+	defer os.Unsetenv("GORANDOM_SOURCES_AUTO_UPDATE")
 
 	t.Run("Sources", func(t *testing.T) {
 		resetFlags(rootCmd)

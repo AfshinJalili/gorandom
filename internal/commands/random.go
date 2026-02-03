@@ -35,7 +35,8 @@ func runRandom(cmd *cobra.Command, args []string) {
 	any, _ := cmd.Flags().GetBool("any")
 	sourceStr, _ := cmd.Flags().GetString("source")
 
-	pool := articles.Data
+	allArticles := loadArticles(cmd)
+	pool := allArticles
 
 	pool, err = filterPool(pool, sourceStr, "")
 	if err != nil {
@@ -85,7 +86,7 @@ func runRandom(cmd *cobra.Command, args []string) {
 
 	switch mode {
 	case outputUI:
-		if err := ui.ShowRandomArticle(article, pool); err != nil {
+		if err := ui.ShowRandomArticle(article, pool, len(allArticles)); err != nil {
 			printError(cmd, fmt.Sprintf("Could not show article: %v", err), "re-run without UI using --plain")
 		}
 	case outputPlain:

@@ -18,6 +18,7 @@ type CardModel struct {
 	History  history.Store
 	ShowHelp bool
 	Stats    string
+	Total    int
 }
 
 func (m CardModel) Init() tea.Cmd {
@@ -197,11 +198,11 @@ func (m CardModel) View() string {
 	return fmt.Sprintf("\n%s\n%s\n%s\n%s\n%s\n", card, statsLine, status, help, helpBody)
 }
 
-func ShowRandomArticle(initial *articles.Article, pool []articles.Article) error {
-	return ShowRandomArticleWithStore(initial, pool, history.DefaultStore)
+func ShowRandomArticle(initial *articles.Article, pool []articles.Article, total int) error {
+	return ShowRandomArticleWithStore(initial, pool, total, history.DefaultStore)
 }
 
-func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Article, store history.Store) error {
+func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Article, total int, store history.Store) error {
 	// Ensure initial is in history
 	if initial != nil {
 		store.AddToHistory(initial.URL)
@@ -211,6 +212,7 @@ func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Artic
 		Article: initial,
 		Pool:    pool,
 		History: store,
+		Total:   total,
 	}
 
 	p := tea.NewProgram(m)
@@ -220,7 +222,10 @@ func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Artic
 
 func (m CardModel) loadStatsCmd() tea.Cmd {
 	return func() tea.Msg {
-		total := len(articles.Data)
+		total := m.Total
+		if total == 0 {
+			total = len(articles.Data)
+		}
 		readUrls, err := m.History.GetReadUrls()
 		if err != nil {
 			return statsMsg{text: "Stats unavailable"}

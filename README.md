@@ -31,6 +31,18 @@ go install ./cmd/gorandom
 
 This will install the `gorandom` binary to your `$GOPATH/bin`. Ensure this directory is in your `PATH`.
 
+### Go Install (Recommended)
+
+```bash
+go install github.com/AfshinJalili/gorandom/cmd/gorandom@latest
+```
+
+### Download Binary (GitHub Releases)
+
+1. Download the binary for your OS/arch from the Releases page.
+2. Make it executable (macOS/Linux): `chmod +x gorandom`
+3. Move it into your `PATH` (example): `mv gorandom /usr/local/bin/`
+
 ## Usage
 
 ### Basic Commands
@@ -162,6 +174,28 @@ The pre-commit hook auto-runs `gofmt` and `golangci-lint`.
 ```bash
 make release-dry
 ```
+
+### Publishing a Release (Step by Step)
+
+```bash
+# 1) Ensure you're on main and clean
+git status
+
+# 2) Run tests (recommended)
+go test ./...
+make fmt
+make lint
+
+# 3) Tag the release (use semantic versioning)
+git tag v0.1.1
+
+# 4) Push code and tag
+git push origin main
+git push origin v0.1.1
+```
+
+After pushing the tag, GitHub Actions runs GoReleaser to build binaries
+for Linux/macOS/Windows and publishes a GitHub Release with the artifacts.
 
 Data storage defaults to `~/.random-go/history.json`.
 For testing, you can override the config directory:

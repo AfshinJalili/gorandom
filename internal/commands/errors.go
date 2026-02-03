@@ -36,3 +36,7 @@ func printOutputModeError(cmd *cobra.Command, err error) {
 func printOpenBrowserError(cmd *cobra.Command, err error) {
 	printError(cmd, fmt.Sprintf("Could not open browser: %v", err), "copy and open the URL manually")
 }
+
+func printWarning(cmd *cobra.Command, msg string) {
+	cmd.Printf("Warning: %s\n", msg)
+}

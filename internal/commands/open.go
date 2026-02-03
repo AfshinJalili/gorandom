@@ -25,7 +25,7 @@ func runOpen(cmd *cobra.Command, args []string) {
 
 	if len(args) == 0 {
 		// Pick random unread
-		pool := articles.Data
+		pool := loadArticles(cmd)
 		readUrls, err := historyStore.GetReadUrls()
 		if err != nil {
 			printHistoryLoadError(cmd, err)

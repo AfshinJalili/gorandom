@@ -1,0 +1,1066 @@
+{
+  "version": 1,
+  "updatedAt": "2026-02-03T00:12:48.267952Z",
+  "articles": [
+    {
+      "URL": "https://go.dev/doc/effective_go",
+      "Source": "docs",
+      "Title": "Effective Go"
+    },
+    {
+      "URL": "https://go.dev/doc/faq",
+      "Source": "docs",
+      "Title": "Frequently Asked Questions"
+    },
+    {
+      "URL": "https://go.dev/doc/code",
+      "Source": "docs",
+      "Title": "How to Write Go Code"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/getting-started",
+      "Source": "docs",
+      "Title": "Tutorial: Getting Started"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/create-module",
+      "Source": "docs",
+      "Title": "Tutorial: Create a Module"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/call-module-code",
+      "Source": "docs",
+      "Title": "Tutorial: Call Your Code From Another Module"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/handle-errors",
+      "Source": "docs",
+      "Title": "Tutorial: Return and Handle an Error"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/random-greeting",
+      "Source": "docs",
+      "Title": "Tutorial: Return a Random Greeting"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/greetings-multiple-people",
+      "Source": "docs",
+      "Title": "Tutorial: Return Greetings for Multiple People"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/add-a-test",
+      "Source": "docs",
+      "Title": "Tutorial: Add a Test"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/compile-install",
+      "Source": "docs",
+      "Title": "Tutorial: Compile and Install"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/web-service-gin",
+      "Source": "docs",
+      "Title": "Tutorial: Developing a RESTful API with Go and Gin"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/generics",
+      "Source": "docs",
+      "Title": "Tutorial: Getting Started with Generics"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/fuzz",
+      "Source": "docs",
+      "Title": "Tutorial: Getting Started with Fuzzing"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/workspaces",
+      "Source": "docs",
+      "Title": "Tutorial: Getting Started with Multi-module Workspaces"
+    },
+    {
+      "URL": "https://go.dev/doc/tutorial/database-access",
+      "Source": "docs",
+      "Title": "Tutorial: Accessing a Relational Database"
+    },
+    {
+      "URL": "https://go.dev/doc/articles/wiki/",
+      "Source": "docs",
+      "Title": "Writing Web Applications"
+    },
+    {
+      "URL": "https://go.dev/doc/diagnostics",
+      "Source": "docs",
+      "Title": "Diagnostics"
+    },
+    {
+      "URL": "https://go.dev/doc/gc-guide",
+      "Source": "docs",
+      "Title": "A Guide to the Go Garbage Collector"
+    },
+    {
+      "URL": "https://go.dev/doc/pgo",
+      "Source": "docs",
+      "Title": "Profile-guided Optimization"
+    },
+    {
+      "URL": "https://go.dev/doc/modules/managing-dependencies",
+      "Source": "docs",
+      "Title": "Managing Dependencies"
+    },
+    {
+      "URL": "https://go.dev/doc/modules/developing",
+      "Source": "docs",
+      "Title": "Developing and Publishing Modules"
+    },
+    {
+      "URL": "https://go.dev/doc/modules/layout",
+      "Source": "docs",
+      "Title": "Module Layout"
+    },
+    {
+      "URL": "https://go.dev/doc/modules/version-numbers",
+      "Source": "docs",
+      "Title": "Module Version Numbers"
+    },
+    {
+      "URL": "https://go.dev/ref/spec",
+      "Source": "docs",
+      "Title": "The Go Programming Language Specification"
+    },
+    {
+      "URL": "https://go.dev/ref/mem",
+      "Source": "docs",
+      "Title": "The Go Memory Model"
+    },
+    {
+      "URL": "https://go.dev/tour/welcome/1",
+      "Source": "tour",
+      "Title": "Hello, World"
+    },
+    {
+      "URL": "https://go.dev/tour/welcome/3",
+      "Source": "tour",
+      "Title": "The Go Playground"
+    },
+    {
+      "URL": "https://go.dev/tour/welcome/4",
+      "Source": "tour",
+      "Title": "Congratulations"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/3",
+      "Source": "tour",
+      "Title": "Exported Names"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/5",
+      "Source": "tour",
+      "Title": "Functions Continued"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/6",
+      "Source": "tour",
+      "Title": "Multiple Results"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/7",
+      "Source": "tour",
+      "Title": "Named Return Values"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/9",
+      "Source": "tour",
+      "Title": "Variables with Initializers"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/10",
+      "Source": "tour",
+      "Title": "Short Variable Declarations"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/11",
+      "Source": "tour",
+      "Title": "Basic Types"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/12",
+      "Source": "tour",
+      "Title": "Zero Values"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/13",
+      "Source": "tour",
+      "Title": "Type Conversions"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/14",
+      "Source": "tour",
+      "Title": "Type Inference"
+    },
+    {
+      "URL": "https://go.dev/tour/basics/16",
+      "Source": "tour",
+      "Title": "Numeric Constants"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/2",
+      "Source": "tour",
+      "Title": "For Continued"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/3",
+      "Source": "tour",
+      "Title": "For is Go's While"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/4",
+      "Source": "tour",
+      "Title": "Forever"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/6",
+      "Source": "tour",
+      "Title": "If with Short Statement"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/7",
+      "Source": "tour",
+      "Title": "If and Else"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/9",
+      "Source": "tour",
+      "Title": "Switch Evaluation Order"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/10",
+      "Source": "tour",
+      "Title": "Switch with No Condition"
+    },
+    {
+      "URL": "https://go.dev/tour/flowcontrol/12",
+      "Source": "tour",
+      "Title": "Stacking Defers"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/3",
+      "Source": "tour",
+      "Title": "Struct Fields"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/4",
+      "Source": "tour",
+      "Title": "Pointers to Structs"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/5",
+      "Source": "tour",
+      "Title": "Struct Literals"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/8",
+      "Source": "tour",
+      "Title": "Slices are Like References"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/9",
+      "Source": "tour",
+      "Title": "Slice Literals"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/10",
+      "Source": "tour",
+      "Title": "Slice Defaults"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/11",
+      "Source": "tour",
+      "Title": "Slice Length and Capacity"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/12",
+      "Source": "tour",
+      "Title": "Nil Slices"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/13",
+      "Source": "tour",
+      "Title": "Creating a Slice with Make"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/14",
+      "Source": "tour",
+      "Title": "Slices of Slices"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/15",
+      "Source": "tour",
+      "Title": "Appending to a Slice"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/17",
+      "Source": "tour",
+      "Title": "Range Continued"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/19",
+      "Source": "tour",
+      "Title": "Map Literals"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/20",
+      "Source": "tour",
+      "Title": "Mutating Maps"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/21",
+      "Source": "tour",
+      "Title": "Function Values"
+    },
+    {
+      "URL": "https://go.dev/tour/moretypes/22",
+      "Source": "tour",
+      "Title": "Function Closures"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/2",
+      "Source": "tour",
+      "Title": "Methods are Functions"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/3",
+      "Source": "tour",
+      "Title": "Methods Continued"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/4",
+      "Source": "tour",
+      "Title": "Pointer Receivers"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/5",
+      "Source": "tour",
+      "Title": "Pointers and Functions"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/6",
+      "Source": "tour",
+      "Title": "Methods and Pointer Indirection"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/7",
+      "Source": "tour",
+      "Title": "Methods and Pointer Indirection (2)"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/8",
+      "Source": "tour",
+      "Title": "Choosing a Value or Pointer Receiver"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/10",
+      "Source": "tour",
+      "Title": "Interfaces are Implemented Implicitly"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/11",
+      "Source": "tour",
+      "Title": "Interface Values"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/12",
+      "Source": "tour",
+      "Title": "Interface Values with Nil"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/13",
+      "Source": "tour",
+      "Title": "Nil Interface Values"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/14",
+      "Source": "tour",
+      "Title": "The Empty Interface"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/15",
+      "Source": "tour",
+      "Title": "Type Assertions"
+    },
+    {
+      "URL": "https://go.dev/tour/methods/16",
+      "Source": "tour",
+      "Title": "Type Switches"
+    },
+    {
+      "URL": "https://go.dev/tour/generics/1",
+      "Source": "tour",
+      "Title": "Type Parameters"
+    },
+    {
+      "URL": "https://go.dev/tour/generics/2",
+      "Source": "tour",
+      "Title": "Generic Types"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/1",
+      "Source": "tour",
+      "Title": "Goroutines"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/2",
+      "Source": "tour",
+      "Title": "Channels"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/3",
+      "Source": "tour",
+      "Title": "Buffered Channels"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/4",
+      "Source": "tour",
+      "Title": "Range and Close"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/6",
+      "Source": "tour",
+      "Title": "Default Selection"
+    },
+    {
+      "URL": "https://go.dev/tour/concurrency/7",
+      "Source": "tour",
+      "Title": "sync.Mutex"
+    },
+    {
+      "URL": "https://gobyexample.com/hello-world",
+      "Source": "gobyexample",
+      "Title": "Hello World"
+    },
+    {
+      "URL": "https://gobyexample.com/values",
+      "Source": "gobyexample",
+      "Title": "Values"
+    },
+    {
+      "URL": "https://gobyexample.com/variables",
+      "Source": "gobyexample",
+      "Title": "Variables"
+    },
+    {
+      "URL": "https://gobyexample.com/constants",
+      "Source": "gobyexample",
+      "Title": "Constants"
+    },
+    {
+      "URL": "https://gobyexample.com/if-else",
+      "Source": "gobyexample",
+      "Title": "If/Else"
+    },
+    {
+      "URL": "https://gobyexample.com/switch",
+      "Source": "gobyexample",
+      "Title": "Switch"
+    },
+    {
+      "URL": "https://gobyexample.com/arrays",
+      "Source": "gobyexample",
+      "Title": "Arrays"
+    },
+    {
+      "URL": "https://gobyexample.com/slices",
+      "Source": "gobyexample",
+      "Title": "Slices"
+    },
+    {
+      "URL": "https://gobyexample.com/functions",
+      "Source": "gobyexample",
+      "Title": "Functions"
+    },
+    {
+      "URL": "https://gobyexample.com/multiple-return-values",
+      "Source": "gobyexample",
+      "Title": "Multiple Return Values"
+    },
+    {
+      "URL": "https://gobyexample.com/variadic-functions",
+      "Source": "gobyexample",
+      "Title": "Variadic Functions"
+    },
+    {
+      "URL": "https://gobyexample.com/closures",
+      "Source": "gobyexample",
+      "Title": "Closures"
+    },
+    {
+      "URL": "https://gobyexample.com/recursion",
+      "Source": "gobyexample",
+      "Title": "Recursion"
+    },
+    {
+      "URL": "https://gobyexample.com/pointers",
+      "Source": "gobyexample",
+      "Title": "Pointers"
+    },
+    {
+      "URL": "https://gobyexample.com/strings-and-runes",
+      "Source": "gobyexample",
+      "Title": "Strings and Runes"
+    },
+    {
+      "URL": "https://gobyexample.com/structs",
+      "Source": "gobyexample",
+      "Title": "Structs"
+    },
+    {
+      "URL": "https://gobyexample.com/methods",
+      "Source": "gobyexample",
+      "Title": "Methods"
+    },
+    {
+      "URL": "https://gobyexample.com/interfaces",
+      "Source": "gobyexample",
+      "Title": "Interfaces"
+    },
+    {
+      "URL": "https://gobyexample.com/enums",
+      "Source": "gobyexample",
+      "Title": "Enums"
+    },
+    {
+      "URL": "https://gobyexample.com/struct-embedding",
+      "Source": "gobyexample",
+      "Title": "Struct Embedding"
+    },
+    {
+      "URL": "https://gobyexample.com/generics",
+      "Source": "gobyexample",
+      "Title": "Generics"
+    },
+    {
+      "URL": "https://gobyexample.com/errors",
+      "Source": "gobyexample",
+      "Title": "Errors"
+    },
+    {
+      "URL": "https://gobyexample.com/custom-errors",
+      "Source": "gobyexample",
+      "Title": "Custom Errors"
+    },
+    {
+      "URL": "https://gobyexample.com/goroutines",
+      "Source": "gobyexample",
+      "Title": "Goroutines"
+    },
+    {
+      "URL": "https://gobyexample.com/channels",
+      "Source": "gobyexample",
+      "Title": "Channels"
+    },
+    {
+      "URL": "https://gobyexample.com/channel-buffering",
+      "Source": "gobyexample",
+      "Title": "Channel Buffering"
+    },
+    {
+      "URL": "https://gobyexample.com/channel-synchronization",
+      "Source": "gobyexample",
+      "Title": "Channel Synchronization"
+    },
+    {
+      "URL": "https://gobyexample.com/channel-directions",
+      "Source": "gobyexample",
+      "Title": "Channel Directions"
+    },
+    {
+      "URL": "https://gobyexample.com/select",
+      "Source": "gobyexample",
+      "Title": "Select"
+    },
+    {
+      "URL": "https://gobyexample.com/timeouts",
+      "Source": "gobyexample",
+      "Title": "Timeouts"
+    },
+    {
+      "URL": "https://gobyexample.com/non-blocking-channel-operations",
+      "Source": "gobyexample",
+      "Title": "Non-Blocking Channel Operations"
+    },
+    {
+      "URL": "https://gobyexample.com/closing-channels",
+      "Source": "gobyexample",
+      "Title": "Closing Channels"
+    },
+    {
+      "URL": "https://gobyexample.com/range-over-channels",
+      "Source": "gobyexample",
+      "Title": "Range over Channels"
+    },
+    {
+      "URL": "https://gobyexample.com/timers",
+      "Source": "gobyexample",
+      "Title": "Timers"
+    },
+    {
+      "URL": "https://gobyexample.com/tickers",
+      "Source": "gobyexample",
+      "Title": "Tickers"
+    },
+    {
+      "URL": "https://gobyexample.com/worker-pools",
+      "Source": "gobyexample",
+      "Title": "Worker Pools"
+    },
+    {
+      "URL": "https://gobyexample.com/waitgroups",
+      "Source": "gobyexample",
+      "Title": "WaitGroups"
+    },
+    {
+      "URL": "https://gobyexample.com/rate-limiting",
+      "Source": "gobyexample",
+      "Title": "Rate Limiting"
+    },
+    {
+      "URL": "https://gobyexample.com/atomic-counters",
+      "Source": "gobyexample",
+      "Title": "Atomic Counters"
+    },
+    {
+      "URL": "https://gobyexample.com/mutexes",
+      "Source": "gobyexample",
+      "Title": "Mutexes"
+    },
+    {
+      "URL": "https://gobyexample.com/stateful-goroutines",
+      "Source": "gobyexample",
+      "Title": "Stateful Goroutines"
+    },
+    {
+      "URL": "https://gobyexample.com/sorting",
+      "Source": "gobyexample",
+      "Title": "Sorting"
+    },
+    {
+      "URL": "https://gobyexample.com/sorting-by-functions",
+      "Source": "gobyexample",
+      "Title": "Sorting by Functions"
+    },
+    {
+      "URL": "https://gobyexample.com/panic",
+      "Source": "gobyexample",
+      "Title": "Panic"
+    },
+    {
+      "URL": "https://gobyexample.com/defer",
+      "Source": "gobyexample",
+      "Title": "Defer"
+    },
+    {
+      "URL": "https://gobyexample.com/recover",
+      "Source": "gobyexample",
+      "Title": "Recover"
+    },
+    {
+      "URL": "https://gobyexample.com/string-functions",
+      "Source": "gobyexample",
+      "Title": "String Functions"
+    },
+    {
+      "URL": "https://gobyexample.com/string-formatting",
+      "Source": "gobyexample",
+      "Title": "String Formatting"
+    },
+    {
+      "URL": "https://gobyexample.com/text-templates",
+      "Source": "gobyexample",
+      "Title": "Text Templates"
+    },
+    {
+      "URL": "https://gobyexample.com/regular-expressions",
+      "Source": "gobyexample",
+      "Title": "Regular Expressions"
+    },
+    {
+      "URL": "https://gobyexample.com/epoch",
+      "Source": "gobyexample",
+      "Title": "Epoch"
+    },
+    {
+      "URL": "https://gobyexample.com/time-formatting-parsing",
+      "Source": "gobyexample",
+      "Title": "Time Formatting / Parsing"
+    },
+    {
+      "URL": "https://gobyexample.com/random-numbers",
+      "Source": "gobyexample",
+      "Title": "Random Numbers"
+    },
+    {
+      "URL": "https://gobyexample.com/number-parsing",
+      "Source": "gobyexample",
+      "Title": "Number Parsing"
+    },
+    {
+      "URL": "https://gobyexample.com/url-parsing",
+      "Source": "gobyexample",
+      "Title": "URL Parsing"
+    },
+    {
+      "URL": "https://gobyexample.com/sha256-hashes",
+      "Source": "gobyexample",
+      "Title": "SHA256 Hashes"
+    },
+    {
+      "URL": "https://gobyexample.com/base64-encoding",
+      "Source": "gobyexample",
+      "Title": "Base64 Encoding"
+    },
+    {
+      "URL": "https://gobyexample.com/reading-files",
+      "Source": "gobyexample",
+      "Title": "Reading Files"
+    },
+    {
+      "URL": "https://gobyexample.com/writing-files",
+      "Source": "gobyexample",
+      "Title": "Writing Files"
+    },
+    {
+      "URL": "https://gobyexample.com/line-filters",
+      "Source": "gobyexample",
+      "Title": "Line Filters"
+    },
+    {
+      "URL": "https://gobyexample.com/file-paths",
+      "Source": "gobyexample",
+      "Title": "File Paths"
+    },
+    {
+      "URL": "https://gobyexample.com/directories",
+      "Source": "gobyexample",
+      "Title": "Directories"
+    },
+    {
+      "URL": "https://gobyexample.com/temporary-files-and-directories",
+      "Source": "gobyexample",
+      "Title": "Temporary Files and Directories"
+    },
+    {
+      "URL": "https://gobyexample.com/embed-directive",
+      "Source": "gobyexample",
+      "Title": "Embed Directive"
+    },
+    {
+      "URL": "https://gobyexample.com/testing-and-benchmarking",
+      "Source": "gobyexample",
+      "Title": "Testing and Benchmarking"
+    },
+    {
+      "URL": "https://gobyexample.com/command-line-arguments",
+      "Source": "gobyexample",
+      "Title": "Command-Line Arguments"
+    },
+    {
+      "URL": "https://gobyexample.com/command-line-flags",
+      "Source": "gobyexample",
+      "Title": "Command-Line Flags"
+    },
+    {
+      "URL": "https://gobyexample.com/command-line-subcommands",
+      "Source": "gobyexample",
+      "Title": "Command-Line Subcommands"
+    },
+    {
+      "URL": "https://gobyexample.com/environment-variables",
+      "Source": "gobyexample",
+      "Title": "Environment Variables"
+    },
+    {
+      "URL": "https://gobyexample.com/logging",
+      "Source": "gobyexample",
+      "Title": "Logging"
+    },
+    {
+      "URL": "https://gobyexample.com/http-client",
+      "Source": "gobyexample",
+      "Title": "HTTP Client"
+    },
+    {
+      "URL": "https://gobyexample.com/http-server",
+      "Source": "gobyexample",
+      "Title": "HTTP Server"
+    },
+    {
+      "URL": "https://gobyexample.com/context",
+      "Source": "gobyexample",
+      "Title": "Context"
+    },
+    {
+      "URL": "https://gobyexample.com/spawning-processes",
+      "Source": "gobyexample",
+      "Title": "Spawning Processes"
+    },
+    {
+      "URL": "https://gobyexample.com/execing-processes",
+      "Source": "gobyexample",
+      "Title": "Exec'ing Processes"
+    },
+    {
+      "URL": "https://gobyexample.com/signals",
+      "Source": "gobyexample",
+      "Title": "Signals"
+    },
+    {
+      "URL": "https://pkg.go.dev/net/http",
+      "Source": "pkg",
+      "Title": "Package net/http"
+    },
+    {
+      "URL": "https://pkg.go.dev/encoding/json",
+      "Source": "pkg",
+      "Title": "Package encoding/json"
+    },
+    {
+      "URL": "https://pkg.go.dev/strings",
+      "Source": "pkg",
+      "Title": "Package strings"
+    },
+    {
+      "URL": "https://pkg.go.dev/context",
+      "Source": "pkg",
+      "Title": "Package context"
+    },
+    {
+      "URL": "https://pkg.go.dev/testing",
+      "Source": "pkg",
+      "Title": "Package testing"
+    },
+    {
+      "URL": "https://pkg.go.dev/database/sql",
+      "Source": "pkg",
+      "Title": "Package database/sql"
+    },
+    {
+      "URL": "https://pkg.go.dev/path/filepath",
+      "Source": "pkg",
+      "Title": "Package path/filepath"
+    },
+    {
+      "URL": "https://pkg.go.dev/reflect",
+      "Source": "pkg",
+      "Title": "Package reflect"
+    },
+    {
+      "URL": "https://pkg.go.dev/runtime",
+      "Source": "pkg",
+      "Title": "Package runtime"
+    },
+    {
+      "URL": "https://pkg.go.dev/html/template",
+      "Source": "pkg",
+      "Title": "Package html/template"
+    },
+    {
+      "URL": "https://pkg.go.dev/text/template",
+      "Source": "pkg",
+      "Title": "Package text/template"
+    },
+    {
+      "URL": "https://go.dev/blog/defer-panic-and-recover",
+      "Source": "blog",
+      "Title": "Defer, Panic, and Recover"
+    },
+    {
+      "URL": "https://go.dev/blog/error-handling-and-go",
+      "Source": "blog",
+      "Title": "Error Handling and Go"
+    },
+    {
+      "URL": "https://go.dev/blog/errors-are-values",
+      "Source": "blog",
+      "Title": "Errors are Values"
+    },
+    {
+      "URL": "https://go.dev/blog/go1.13-errors",
+      "Source": "blog",
+      "Title": "Working with Errors in Go 1.13"
+    },
+    {
+      "URL": "https://go.dev/blog/slices",
+      "Source": "blog",
+      "Title": "Arrays, Slices: The Mechanics of Append"
+    },
+    {
+      "URL": "https://go.dev/blog/slices-intro",
+      "Source": "blog",
+      "Title": "Go Slices: Usage and Internals"
+    },
+    {
+      "URL": "https://go.dev/blog/strings",
+      "Source": "blog",
+      "Title": "Strings, Bytes, Runes and Characters in Go"
+    },
+    {
+      "URL": "https://go.dev/blog/maps",
+      "Source": "blog",
+      "Title": "Go Maps in Action"
+    },
+    {
+      "URL": "https://go.dev/blog/laws-of-reflection",
+      "Source": "blog",
+      "Title": "The Laws of Reflection"
+    },
+    {
+      "URL": "https://go.dev/blog/pipelines",
+      "Source": "blog",
+      "Title": "Go Concurrency Patterns: Pipelines and Cancellation"
+    },
+    {
+      "URL": "https://go.dev/blog/context",
+      "Source": "blog",
+      "Title": "Go Concurrency Patterns: Context"
+    },
+    {
+      "URL": "https://go.dev/blog/race-detector",
+      "Source": "blog",
+      "Title": "Introducing the Go Race Detector"
+    },
+    {
+      "URL": "https://go.dev/blog/subtests",
+      "Source": "blog",
+      "Title": "Using Subtests and Sub-benchmarks"
+    },
+    {
+      "URL": "https://go.dev/blog/cover",
+      "Source": "blog",
+      "Title": "The Cover Story"
+    },
+    {
+      "URL": "https://go.dev/blog/pprof",
+      "Source": "blog",
+      "Title": "Profiling Go Programs"
+    },
+    {
+      "URL": "https://go.dev/blog/gofmt",
+      "Source": "blog",
+      "Title": "go fmt Your Code"
+    },
+    {
+      "URL": "https://go.dev/blog/godoc",
+      "Source": "blog",
+      "Title": "Godoc: Documenting Go Code"
+    },
+    {
+      "URL": "https://go.dev/blog/organizing-go-code",
+      "Source": "blog",
+      "Title": "Organizing Go Code"
+    },
+    {
+      "URL": "https://go.dev/blog/package-names",
+      "Source": "blog",
+      "Title": "Package Names"
+    },
+    {
+      "URL": "https://go.dev/blog/declaration-syntax",
+      "Source": "blog",
+      "Title": "Go's Declaration Syntax"
+    },
+    {
+      "URL": "https://go.dev/blog/generate",
+      "Source": "blog",
+      "Title": "Generating Code"
+    },
+    {
+      "URL": "https://go.dev/blog/using-go-modules",
+      "Source": "blog",
+      "Title": "Using Go Modules"
+    },
+    {
+      "URL": "https://go.dev/blog/migrating-to-go-modules",
+      "Source": "blog",
+      "Title": "Migrating to Go Modules"
+    },
+    {
+      "URL": "https://go.dev/blog/publishing-go-modules",
+      "Source": "blog",
+      "Title": "Publishing Go Modules"
+    },
+    {
+      "URL": "https://go.dev/blog/v2-go-modules",
+      "Source": "blog",
+      "Title": "Go Modules: v2 and Beyond"
+    },
+    {
+      "URL": "https://go.dev/blog/intro-generics",
+      "Source": "blog",
+      "Title": "An Introduction to Generics"
+    },
+    {
+      "URL": "https://go.dev/blog/when-generics",
+      "Source": "blog",
+      "Title": "When to Use Generics"
+    },
+    {
+      "URL": "https://go.dev/blog/why-generics",
+      "Source": "blog",
+      "Title": "Why Generics?"
+    },
+    {
+      "URL": "https://go.dev/blog/go1.18",
+      "Source": "blog",
+      "Title": "Go 1.18 is Released!"
+    },
+    {
+      "URL": "https://go.dev/blog/go1.21",
+      "Source": "blog",
+      "Title": "Go 1.21 is Released!"
+    },
+    {
+      "URL": "https://go.dev/blog/go1.22",
+      "Source": "blog",
+      "Title": "Go 1.22 is Released!"
+    },
+    {
+      "URL": "https://go.dev/blog/range-functions",
+      "Source": "blog",
+      "Title": "Range Over Function Types"
+    },
+    {
+      "URL": "https://go.dev/blog/slog",
+      "Source": "blog",
+      "Title": "Structured Logging with slog"
+    },
+    {
+      "URL": "https://go.dev/blog/pgo",
+      "Source": "blog",
+      "Title": "Profile-guided Optimization in Go 1.21"
+    },
+    {
+      "URL": "https://go.dev/blog/routing-enhancements",
+      "Source": "blog",
+      "Title": "Routing Enhancements for Go 1.22"
+    },
+    {
+      "URL": "https://go.dev/blog/wasi",
+      "Source": "blog",
+      "Title": "WASI Support in Go"
+    },
+    {
+      "URL": "https://go.dev/blog/govulncheck",
+      "Source": "blog",
+      "Title": "Govulncheck v1.0.0 is Released!"
+    },
+    {
+      "URL": "https://go.dev/blog/go15gc",
+      "Source": "blog",
+      "Title": "Go GC: Prioritizing Low Latency and Simplicity"
+    },
+    {
+      "URL": "https://go.dev/blog/ismmkeynote",
+      "Source": "blog",
+      "Title": "Getting to Go: The Journey of Go's Garbage Collector"
+    }
+  ]
+}

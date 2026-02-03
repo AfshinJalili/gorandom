@@ -5,7 +5,6 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/AfshinJalili/gorandom/internal/articles"
 	"github.com/AfshinJalili/gorandom/internal/history"
 	"github.com/AfshinJalili/gorandom/internal/ui"
 	"github.com/spf13/cobra"
@@ -39,6 +38,7 @@ func runMarkUnmark(cmd *cobra.Command, args []string, markRead bool) {
 
 	if len(args) == 0 {
 		// Interactive mode
+		loadArticles(cmd)
 		entries, err := historyStore.GetSortedHistory()
 		if err != nil {
 			printHistoryLoadError(cmd, err)
@@ -123,7 +123,7 @@ func runMarkUnmark(cmd *cobra.Command, args []string, markRead bool) {
 }
 
 func findTitle(url string) string {
-	for _, a := range articles.Data {
+	for _, a := range loadArticlesQuiet() {
 		if a.URL == url {
 			if a.Title != "" {
 				return a.Title

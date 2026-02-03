@@ -40,7 +40,8 @@ func runSearch(cmd *cobra.Command, args []string) {
 	any, _ := cmd.Flags().GetBool("any")
 	sourceStr, _ := cmd.Flags().GetString("source")
 
-	pool, err := filterPool(articles.Data, sourceStr, keyword)
+	allArticles := loadArticles(cmd)
+	pool, err := filterPool(allArticles, sourceStr, keyword)
 	if err != nil {
 		printInvalidSource(cmd, sourceStr)
 		return
@@ -68,7 +69,7 @@ func runSearch(cmd *cobra.Command, args []string) {
 	switch mode {
 	case outputUI:
 		if len(pool) == 1 {
-			if err := ui.ShowRandomArticle(&pool[0], pool); err != nil {
+			if err := ui.ShowRandomArticle(&pool[0], pool, len(allArticles)); err != nil {
 				printError(cmd, fmt.Sprintf("Could not show article: %v", err), "re-run without UI using --plain")
 			}
 			return
@@ -89,7 +90,7 @@ func runSearch(cmd *cobra.Command, args []string) {
 		}
 		for i := range pool {
 			if pool[i].URL == choice {
-				if err := ui.ShowRandomArticle(&pool[i], pool); err != nil {
+				if err := ui.ShowRandomArticle(&pool[i], pool, len(allArticles)); err != nil {
 					printError(cmd, fmt.Sprintf("Could not show article: %v", err), "re-run without UI using --plain")
 				}
 				return
