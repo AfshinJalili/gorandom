@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+var renameFile = os.Rename
+
 type HistoryEntry struct {
 	URL          string    `json:"url"`
 	ViewedAt     time.Time `json:"viewedAt"`
@@ -83,9 +85,33 @@ func SaveHistory(history *HistoryData) error {
 		return fmt.Errorf("failed to marshal history: %w", err)
 	}
 
-	if err := os.WriteFile(path, data, 0644); err != nil {
-		return fmt.Errorf("failed to write history file: %w", err)
+	tmp, err := os.CreateTemp(dir, "history-*.tmp")
+	if err != nil {
+		return fmt.Errorf("failed to create temp history file: %w", err)
 	}
+	tmpPath := tmp.Name()
+	defer func() {
+		if tmpPath != "" {
+			_ = os.Remove(tmpPath)
+		}
+	}()
+
+	if _, err := tmp.Write(data); err != nil {
+		_ = tmp.Close()
+		return fmt.Errorf("failed to write temp history file: %w", err)
+	}
+	if err := tmp.Sync(); err != nil {
+		_ = tmp.Close()
+		return fmt.Errorf("failed to sync temp history file: %w", err)
+	}
+	if err := tmp.Close(); err != nil {
+		return fmt.Errorf("failed to close temp history file: %w", err)
+	}
+
+	if err := renameFile(tmpPath, path); err != nil {
+		return fmt.Errorf("failed to move temp history file into place: %w", err)
+	}
+	tmpPath = ""
 	return nil
 }
 
