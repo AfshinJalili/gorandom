@@ -43,7 +43,11 @@ func runBookmark(cmd *cobra.Command, args []string) {
 	} else {
 		input := args[0]
 		if index, err := strconv.Atoi(input); err == nil {
-			entries, _ := historyStore.GetSortedHistory()
+			entries, err := historyStore.GetSortedHistory()
+			if err != nil {
+				printHistoryLoadError(cmd, err)
+				return
+			}
 			idx := index - 1
 			if idx >= 0 && idx < len(entries) {
 				targetUrl = entries[idx].URL
