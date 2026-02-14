@@ -238,6 +238,48 @@ func TestCommandSuite(t *testing.T) {
 		}
 	})
 
+	t.Run("HistoryPlainNegativeLimit", func(t *testing.T) {
+		resetFlags(rootCmd)
+		url := "http://example.com/history-negative-limit"
+		if err := history.AddToHistory(url); err != nil {
+			t.Fatal(err)
+		}
+
+		b := bytes.NewBufferString("")
+		rootCmd.SetOut(b)
+		rootCmd.SetArgs([]string{"history", "--plain", "--limit", "-1"})
+		if err := rootCmd.Execute(); err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(b.String(), "Invalid limit: -1") {
+			t.Errorf("Expected invalid limit error, got %q", b.String())
+		}
+		if strings.Contains(b.String(), url) {
+			t.Errorf("Expected no history content when limit is invalid, got %q", b.String())
+		}
+	})
+
+	t.Run("HistoryJSONZeroLimit", func(t *testing.T) {
+		resetFlags(rootCmd)
+		url := "http://example.com/history-json-zero"
+		if err := history.AddToHistory(url); err != nil {
+			t.Fatal(err)
+		}
+
+		b := bytes.NewBufferString("")
+		rootCmd.SetOut(b)
+		rootCmd.SetArgs([]string{"history", "--json", "--limit", "0"})
+		if err := rootCmd.Execute(); err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(b.String(), "[]") {
+			t.Errorf("Expected empty JSON array for --limit 0, got %q", b.String())
+		}
+		if strings.Contains(b.String(), url) {
+			t.Errorf("Expected no history entries for --limit 0, got %q", b.String())
+		}
+	})
+
 	t.Run("NextPlain", func(t *testing.T) {
 		resetFlags(rootCmd)
 		orig := articles.Data

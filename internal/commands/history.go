@@ -32,6 +32,11 @@ func runHistory(cmd *cobra.Command, args []string) {
 	}
 
 	limit, _ := cmd.Flags().GetInt("limit")
+	if limit < 0 {
+		printError(cmd, fmt.Sprintf("Invalid limit: %d", limit), "use --limit with a value >= 0")
+		return
+	}
+
 	loadArticlesOptional(cmd)
 
 	entries, err := historyStore.GetSortedHistory()
