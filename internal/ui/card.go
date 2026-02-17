@@ -254,8 +254,7 @@ func ShowRandomArticleWithStore(initial *articles.Article, pool []articles.Artic
 		IsBookmarked: isBookmarked,
 	}
 
-	p := tea.NewProgram(m)
-	_, err := p.Run()
+	_, err := RunProgram(m)
 	return err
 }
 
@@ -264,9 +263,9 @@ func (m CardModel) loadStatsCmd() tea.Cmd {
 		total := m.Total
 		if total == 0 {
 			total = len(m.Pool)
-				if total == 0 {
-					total = len(articles.Cached())
-				}
+			if total == 0 {
+				total = len(articles.Cached())
+			}
 		}
 		readUrls, err := m.History.GetReadUrls()
 		if err != nil {

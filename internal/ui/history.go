@@ -193,8 +193,7 @@ func ShowHistoryWithStore(entries []history.HistoryEntry, title string, store hi
 
 	m := historyModel{list: l, keys: keys, historyStore: store}
 
-	p := tea.NewProgram(m)
-	_, err := p.Run()
+	_, err := RunProgram(m)
 	if err != nil {
 		return "", err
 	}

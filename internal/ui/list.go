@@ -79,8 +79,7 @@ func SelectArticle(items []struct{ Title, Value string }, title string) (string,
 
 	m := model{list: l}
 
-	p := tea.NewProgram(m)
-	finalModel, err := p.Run()
+	finalModel, err := RunProgram(m)
 	if err != nil {
 		return "", err
 	}
