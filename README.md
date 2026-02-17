@@ -12,7 +12,6 @@ A CLI and TUI to discover random Go articles, tutorials, and documentation from 
 - Interactive TUI with keyboard shortcuts
 - Non-interactive output for scripting (`--plain`, `--json`, `--no-ui`)
 - Remote sources file with local caching and manual refresh
-- Zen mode reader for focused, paragraph-by-paragraph reading
 
 ## Quickstart
 
@@ -53,9 +52,6 @@ gorandom
 
 # Pick next unread article
 gorandom next
-
-# Read in Zen mode
-gorandom zen
 
 # Search by keyword (title or source)
 gorandom search generics
@@ -110,19 +106,6 @@ gorandom sources update
 
 # Cache status
 gorandom sources status
-```
-
-### Zen Mode
-
-```bash
-# Read a curated article inside the terminal
-gorandom zen
-
-# Read an article from history by index
-gorandom zen 1
-
-# Force refresh the cached article content
-gorandom zen --refresh
 ```
 
 ## TUI Shortcuts
