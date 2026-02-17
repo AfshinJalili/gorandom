@@ -14,8 +14,7 @@ import (
 var sourcesFetchOnce sync.Once
 
 func loadArticlesRequired(cmd *cobra.Command) ([]articles.Article, bool) {
-	maybeNotifyFetchingSpinner(cmd)
-	maybeNotifyFetching(cmd)
+	notifyFetchingIfNeeded(cmd)
 	data, err := articles.GetData()
 	if err != nil || len(data) == 0 {
 		printError(cmd, fmt.Sprintf("Could not load sources: %v", err), "check your network or run \"gorandom sources update\"")
@@ -25,8 +24,7 @@ func loadArticlesRequired(cmd *cobra.Command) ([]articles.Article, bool) {
 }
 
 func loadArticlesOptional(cmd *cobra.Command) []articles.Article {
-	maybeNotifyFetchingSpinner(cmd)
-	maybeNotifyFetching(cmd)
+	notifyFetchingIfNeeded(cmd)
 	data, err := articles.GetData()
 	if err != nil || len(data) == 0 {
 		printWarning(cmd, "Sources cache missing; run \"gorandom sources update\".")
@@ -43,34 +41,31 @@ func loadArticlesQuiet() []articles.Article {
 	return data
 }
 
-func maybeNotifyFetching(cmd *cobra.Command) {
-	exists, err := articles.CacheExists()
-	if err != nil {
-		printWarning(cmd, fmt.Sprintf("Could not check sources cache: %v", err))
-	}
-	if !exists {
-		sourcesFetchOnce.Do(func() {
-			cmd.Println("Fetching sources...")
-		})
-	}
-}
-
-func maybeNotifyFetchingSpinner(cmd *cobra.Command) {
+func notifyFetchingIfNeeded(cmd *cobra.Command) {
 	if cmd == nil {
 		return
 	}
-	if cmd.OutOrStdout() == nil {
+	exists, err := articles.CacheExists()
+	if err != nil {
+		printWarning(cmd, fmt.Sprintf("Could not check sources cache: %v", err))
 		return
 	}
-	// TUI mode shows a small spinner while fetching on first run.
-	if isLikelyTUI(cmd) {
-		if v := os.Getenv("GORANDOM_SOURCES_SPINNER"); v == "0" {
+	if exists {
+		return
+	}
+
+	sourcesFetchOnce.Do(func() {
+		// TUI mode shows a small spinner while fetching on first run.
+		if isLikelyTUI(cmd) {
+			if v := os.Getenv("GORANDOM_SOURCES_SPINNER"); v == "0" {
+				cmd.Println("Fetching sources...")
+				return
+			}
+			ui.ShowSpinner("Fetching sources...", 600*time.Millisecond)
 			return
 		}
-		sourcesFetchOnce.Do(func() {
-			ui.ShowSpinner("Fetching sources...", 600*time.Millisecond)
-		})
-	}
+		cmd.Println("Fetching sources...")
+	})
 }
 
 func isLikelyTUI(cmd *cobra.Command) bool {

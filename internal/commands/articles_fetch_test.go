@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
 	"testing"
 	"time"
 
@@ -68,6 +69,55 @@ func TestFetchMessageShownOnce(t *testing.T) {
 	}
 	if bytes.Contains(buf.Bytes(), []byte("Fetching sources...")) {
 		t.Fatalf("did not expect fetch message on second call, got %q", buf.String())
+	}
+}
+
+func TestFetchMessageNotShownWhenCacheExists(t *testing.T) {
+	resetSourcesFetchOnce()
+	disableSpinnerForTests(t)
+
+	tmpDir, err := os.MkdirTemp("", "gorandom-fetch-cache")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	os.Setenv("GORANDOM_CONFIG_DIR", tmpDir)
+	defer os.Unsetenv("GORANDOM_CONFIG_DIR")
+
+	payload := struct {
+		Version   int                `json:"version"`
+		UpdatedAt time.Time          `json:"updatedAt"`
+		Articles  []articles.Article `json:"articles"`
+	}{
+		Version:   1,
+		UpdatedAt: time.Now().UTC(),
+		Articles: []articles.Article{
+			{URL: "http://example.com", Title: "Cached", Source: articles.SourceDocs},
+		},
+	}
+
+	cachePath := filepath.Join(tmpDir, "sources.json")
+	data, err := json.MarshalIndent(payload, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(cachePath, data, 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	articles.ResetCache()
+
+	cmd := &cobra.Command{}
+	buf := &bytes.Buffer{}
+	cmd.SetOut(buf)
+
+	_, ok := loadArticlesRequired(cmd)
+	if !ok {
+		t.Fatal("expected loadArticlesRequired success")
+	}
+	if bytes.Contains(buf.Bytes(), []byte("Fetching sources...")) {
+		t.Fatalf("did not expect fetch message, got %q", buf.String())
 	}
 }
 
