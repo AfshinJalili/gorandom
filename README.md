@@ -13,13 +13,6 @@ A CLI and TUI to discover random Go articles, tutorials, and documentation from 
 - Non-interactive output for scripting (`--plain`, `--json`, `--no-ui`)
 - Remote sources file with local caching and manual refresh
 
-## Quickstart
-
-```bash
-gorandom sources update
-gorandom
-```
-
 ## Installation
 
 ### Go Install (Recommended)
