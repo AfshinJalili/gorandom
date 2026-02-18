@@ -132,6 +132,29 @@ func TestCommandSuite(t *testing.T) {
 		}
 	})
 
+	t.Run("MarkInvalidIndex", func(t *testing.T) {
+		resetFlags(rootCmd)
+		if err := os.RemoveAll(tmpDir); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.MkdirAll(tmpDir, 0755); err != nil {
+			t.Fatal(err)
+		}
+
+		b := bytes.NewBufferString("")
+		rootCmd.SetOut(b)
+		rootCmd.SetArgs([]string{"mark", "9999"})
+		if err := rootCmd.Execute(); err != nil {
+			t.Fatal(err)
+		}
+		if !strings.Contains(b.String(), "Invalid index") {
+			t.Errorf("Expected invalid index error, got %q", b.String())
+		}
+		if !strings.Contains(b.String(), "Try:") {
+			t.Errorf("Expected hint line, got %q", b.String())
+		}
+	})
+
 	t.Run("InvalidSource", func(t *testing.T) {
 		resetFlags(rootCmd)
 		b := bytes.NewBufferString("")

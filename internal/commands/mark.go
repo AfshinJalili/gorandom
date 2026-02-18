@@ -2,7 +2,6 @@ package commands
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/AfshinJalili/gorandom/internal/history"
@@ -89,7 +88,7 @@ func runMarkUnmark(cmd *cobra.Command, args []string, markRead bool) {
 				targetUrl = entries[idx].URL
 			} else {
 				printInvalidIndex(cmd, input)
-				os.Exit(1)
+				return
 			}
 		} else {
 			// It's a URL
