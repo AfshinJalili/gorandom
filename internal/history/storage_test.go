@@ -181,3 +181,53 @@ func TestLoadHistoryCorruptJSON(t *testing.T) {
 		t.Error("Expected corrupted history file to remain unchanged on error")
 	}
 }
+
+func TestSaveHistoryAtomicRenameFailureKeepsOriginalFile(t *testing.T) {
+	tmpDir, err := os.MkdirTemp("", "gorandom-history-atomic")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer os.RemoveAll(tmpDir)
+
+	os.Setenv("GORANDOM_CONFIG_DIR", tmpDir)
+	defer os.Unsetenv("GORANDOM_CONFIG_DIR")
+
+	path, err := GetHistoryFilePath()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	original := []byte("{\n  \"entries\": [\n    {\"url\":\"http://old\",\"viewedAt\":\"2024-01-01T00:00:00Z\",\"isRead\":false,\"isBookmarked\":false,\"readAt\":\"0001-01-01T00:00:00Z\"}\n  ]\n}")
+	if err := os.WriteFile(path, original, 0644); err != nil {
+		t.Fatal(err)
+	}
+
+	oldRename := renameFile
+	renameFile = func(oldPath, newPath string) error {
+		return os.ErrPermission
+	}
+	defer func() { renameFile = oldRename }()
+
+	err = SaveHistory(&HistoryData{Entries: []HistoryEntry{{URL: "http://new", ViewedAt: time.Now()}}})
+	if err == nil {
+		t.Fatal("expected SaveHistory to fail when rename fails")
+	}
+
+	after, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if string(after) != string(original) {
+		t.Fatal("expected original history file to remain unchanged")
+	}
+
+	files, err := os.ReadDir(tmpDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, file := range files {
+		if matched := len(file.Name()) >= 8 && file.Name()[:8] == "history-"; matched {
+			t.Fatalf("expected temp file cleanup, found %s", file.Name())
+		}
+	}
+}
